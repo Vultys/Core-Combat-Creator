@@ -15,6 +15,9 @@ namespace CCC.Combat
         [SerializeField] private Mover _mover;
         [SerializeField] private ActionScheduler _scheduler;
         [SerializeField] private Animator _animator;
+        [SerializeField] private GameObject _weaponPrefab = null;
+        [SerializeField] private Transform _handTransform;
+
         private float _timeSinceLastAttack = Mathf.Infinity;
 
         private Health _target; 
@@ -24,6 +27,14 @@ namespace CCC.Combat
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
         
         private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _weaponRange;
+
+        private void Start()
+        {
+            if (_weaponPrefab != null)
+            {
+                SpawnWeapon();
+            }
+        }
 
         private void Update()
         {
@@ -90,6 +101,11 @@ namespace CCC.Combat
         {
             _animator.SetTrigger(_attackTriggerHash);
             _animator.ResetTrigger(_stopAttackTriggerHash);
+        }
+
+        private void SpawnWeapon()
+        {
+            Instantiate(_weaponPrefab, _handTransform);
         }
 
         /// <summary>
