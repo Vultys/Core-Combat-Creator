@@ -16,7 +16,8 @@ namespace CCC.Combat
         [SerializeField] private ActionScheduler _scheduler;
         [SerializeField] private Animator _animator;
         [SerializeField] private GameObject _weaponPrefab = null;
-        [SerializeField] private Transform _handTransform;
+        [SerializeField] private Transform _handTransform = null;
+        [SerializeField] private AnimatorOverrideController _weaponOverride = null;
 
         private float _timeSinceLastAttack = Mathf.Infinity;
 
@@ -30,7 +31,7 @@ namespace CCC.Combat
 
         private void Start()
         {
-            if (_weaponPrefab != null)
+            if (_weaponPrefab != null && _handTransform != null)
             {
                 SpawnWeapon();
             }
@@ -106,6 +107,7 @@ namespace CCC.Combat
         private void SpawnWeapon()
         {
             Instantiate(_weaponPrefab, _handTransform);
+            _animator.runtimeAnimatorController = _weaponOverride;
         }
 
         /// <summary>
