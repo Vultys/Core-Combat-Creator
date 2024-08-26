@@ -7,9 +7,7 @@ namespace CCC.Combat
     public class Fighter : MonoBehaviour, IAction
     {
         [Header("Settings")]
-        [SerializeField] private float _weaponRange = 2f;
         [SerializeField] private float _timeBetweenAttacks = 1f;
-        [SerializeField] private float _damage = 10f;
 
         [Header("Components")]
         [SerializeField] private Mover _mover;
@@ -26,7 +24,7 @@ namespace CCC.Combat
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
         
-        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _weaponRange;
+        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _weapon.Range;
 
         private void Start()
         {
@@ -108,7 +106,7 @@ namespace CCC.Combat
         /// </summary>
         private void Hit()
         {
-            _target?.TakeDamage(_damage);
+            _target?.TakeDamage(_weapon.Damage);
         }
     }
 }

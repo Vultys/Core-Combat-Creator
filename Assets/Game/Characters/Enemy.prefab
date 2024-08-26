@@ -114,6 +114,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5844795661910770845, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: _weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 41820a0f50bfec34095dc90f761d2900,
+        type: 2}
+    - target: {fileID: 5844795661910770845, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: _handTransform
+      value: 
+      objectReference: {fileID: 5021382364316973119}
     - target: {fileID: 6072140717697472421, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
       propertyPath: _health
@@ -232,3 +243,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
+--- !u!4 &5021382364316973119 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 461188, guid: 679ff741e12a7e740819ede24a7000b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 5021382364316643771}
+  m_PrefabAsset: {fileID: 0}
