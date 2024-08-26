@@ -14,7 +14,7 @@ namespace CCC.Combat
         [SerializeField] private ActionScheduler _scheduler;
         [SerializeField] private Animator _animator;
         [SerializeField] private Transform _handTransform = null;
-        [SerializeField] private Weapon _weapon;
+        [SerializeField] private Weapon _defaultWeapon = null;
 
         private float _timeSinceLastAttack = Mathf.Infinity;
 
@@ -24,14 +24,13 @@ namespace CCC.Combat
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
         
-        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _weapon.Range;
+        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon?.Range;
+
+        private Weapon _currentWeapon = null;
 
         private void Start()
         {
-            if (_handTransform != null)
-            {
-                _weapon?.Spawn(_handTransform, _animator);
-            }
+            EquipWeapon(_defaultWeapon);
         }
 
         private void Update()
@@ -67,12 +66,6 @@ namespace CCC.Combat
             _mover.Cancel();
         }
 
-        private void TriggerStop()
-        {
-            _animator.SetTrigger(_stopAttackTriggerHash);
-            _animator.ResetTrigger(_attackTriggerHash);
-        }
-
         public bool CanAttack(GameObject combatTarget) 
         {
             if(combatTarget == null)
@@ -82,6 +75,12 @@ namespace CCC.Combat
 
             Health targetToTest = combatTarget.GetComponent<Health>();
             return targetToTest != null && !targetToTest.IsDead;
+        }
+
+        private void TriggerStop()
+        {
+            _animator.SetTrigger(_stopAttackTriggerHash);
+            _animator.ResetTrigger(_attackTriggerHash);
         }
 
         private void AttackBehaviour()
@@ -101,12 +100,18 @@ namespace CCC.Combat
             _animator.ResetTrigger(_stopAttackTriggerHash);
         }
 
+        public void EquipWeapon(Weapon weapon)
+        {
+            weapon.Spawn(_handTransform, _animator);
+            _currentWeapon = weapon;
+        }
+
         /// <summary>
         /// Animation event
         /// </summary>
         private void Hit()
         {
-            _target?.TakeDamage(_weapon.Damage);
+            _target?.TakeDamage(_currentWeapon.Damage);
         }
     }
 }
