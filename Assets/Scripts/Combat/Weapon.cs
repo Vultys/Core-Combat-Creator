@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CCC.Core;
+using UnityEngine;
 
 namespace CCC.Combat
 {
@@ -12,11 +13,14 @@ namespace CCC.Combat
 
         [Header("Prefabs")]
         [SerializeField] private GameObject _equippedPrefab = null;
-        [SerializeField] private AnimatorOverrideController _animatorOverride = null; 
+        [SerializeField] private AnimatorOverrideController _animatorOverride = null;
+        [SerializeField] private Projectile _projectile = null;
         
         public float Range => _range;
 
         public float Damage => _damage;
+
+        public bool HasProjectile => _projectile != null;
 
         public void Spawn(Transform rightHand, Transform leftHand, Animator animator)
         {
@@ -30,5 +34,13 @@ namespace CCC.Combat
                 animator.runtimeAnimatorController = _animatorOverride;
             }
         }
+
+        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target)
+        {
+            Projectile projectile = Instantiate(_projectile, ChooseHand(rightHand, leftHand).position, Quaternion.identity);
+            projectile.SetTarget(target);
+        }
+
+        private Transform ChooseHand(Transform rightHand, Transform leftHand) => _isRightHanded ? rightHand : leftHand;
     }
 }

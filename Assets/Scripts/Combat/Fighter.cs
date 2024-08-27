@@ -112,7 +112,24 @@ namespace CCC.Combat
         /// </summary>
         private void Hit()
         {
-            _target?.TakeDamage(_currentWeapon.Damage);
+            if (_target == null) return;
+
+            if (_currentWeapon.HasProjectile)
+            {
+                _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target);
+            }
+            else
+            {
+                _target.TakeDamage(_currentWeapon.Damage);
+            }
+        }
+
+        /// <summary>
+        /// Animation event
+        /// </summary>
+        private void Shoot()
+        {
+            Hit();
         }
     }
 }

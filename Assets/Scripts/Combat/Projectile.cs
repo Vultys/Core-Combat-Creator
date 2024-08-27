@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using CCC.Core;
+using UnityEngine;
 
 namespace CCC.Combat
 {
     public class Projectile : MonoBehaviour
     {
         [SerializeField] private float _speed = 1f;
-
-        [SerializeField] private Transform _target = null;
+        
+        private Health _target = null;
 
         private void Update()
         {
@@ -17,16 +18,18 @@ namespace CCC.Combat
             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
         }
 
+        public void SetTarget(Health target) => _target = target;
+
         private Vector3 GetAimLocation()
         {
             CapsuleCollider targetCapsule = _target.GetComponent<CapsuleCollider>();
 
             if (targetCapsule == null)
             {
-                return _target.position;
+                return _target.transform.position;
             }
 
-            return _target.position + Vector3.up * targetCapsule.height / 2;
+            return _target.transform.position + Vector3.up * targetCapsule.height / 2;
         }
     }
 }
