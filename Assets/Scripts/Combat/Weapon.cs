@@ -15,7 +15,9 @@ namespace CCC.Combat
         [SerializeField] private GameObject _equippedPrefab = null;
         [SerializeField] private AnimatorOverrideController _animatorOverride = null;
         [SerializeField] private Projectile _projectile = null;
-        
+
+        private const string _name = "Weapon";
+
         public float Range => _range;
 
         public float Damage => _damage;
@@ -24,10 +26,13 @@ namespace CCC.Combat
 
         public void Spawn(Transform rightHand, Transform leftHand, Animator animator)
         {
+            DestroyOldWeapon(rightHand, leftHand);
+
             if (_equippedPrefab != null)
             {
                 Transform hand = _isRightHanded ? rightHand : leftHand;
-                Instantiate(_equippedPrefab, hand);
+                GameObject weapon = Instantiate(_equippedPrefab, hand);
+                weapon.name = _name;
             }
             if(_animatorOverride != null)
             {
@@ -42,5 +47,23 @@ namespace CCC.Combat
         }
 
         private Transform ChooseHand(Transform rightHand, Transform leftHand) => _isRightHanded ? rightHand : leftHand;
+
+        private void DestroyOldWeapon(Transform rightHand, Transform leftHand)
+        {
+            Transform oldWeapon = rightHand.Find(_name);
+
+            if (oldWeapon == null)
+            {
+                oldWeapon = leftHand.Find(_name);
+            }
+
+            if(oldWeapon == null)
+            {
+                return;
+            }
+
+            oldWeapon.name = "DESTROYING";
+            Destroy(oldWeapon.gameObject);
+        }
     }
 }
