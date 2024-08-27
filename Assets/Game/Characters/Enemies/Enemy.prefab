@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chaseDistance: 5
-  _suspicionTime: 3
+  _suspicionTime: 5
   _waypointTolerance: 1
   _waypointDwellTime: 3
   _patrolSpeedFraction: 0.2
@@ -113,6 +113,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8078583079559380479, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: _maxSpeed
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5844795661910770845, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}

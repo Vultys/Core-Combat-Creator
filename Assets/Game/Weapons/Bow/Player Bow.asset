@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c2b1cc41d6577347bf58ae4a3ed5b73, type: 3}
-  m_Name: Bow
+  m_Name: Player Bow
   m_EditorClassIdentifier: 
   _range: 10
   _damage: 10
@@ -18,5 +18,5 @@ MonoBehaviour:
   _equippedPrefab: {fileID: 3427960766408153188, guid: 3e00995ad61658540af140fc89af2bd3,
     type: 3}
   _animatorOverride: {fileID: 22100000, guid: c50442877c53d1941bb01ac375b8bcf6, type: 2}
-  _projectile: {fileID: 8817545523642135630, guid: e933aa298506ac0468da6994ea5277df,
+  _projectile: {fileID: 8682204426798082203, guid: 733dffd88a8cb5243a67a25dd58029f0,
     type: 3}
