@@ -7,15 +7,28 @@ namespace CCC.Combat
     {
         [SerializeField] private float _speed = 1f;
 
+        [SerializeField] private bool _isHoming = false;
+
         private Health _target = null;
 
         private float _damage = 0f;
 
+        private void Start()
+        {
+            transform.LookAt(GetAimLocation());
+        }
+
         private void Update()
         {
-            if (_target == null) return;
+            if (_target == null)
+            {
+                return;
+            }
 
-            transform.LookAt(GetAimLocation());
+            if (_isHoming && !_target.IsDead)
+            {
+                transform.LookAt(GetAimLocation());
+            }
 
             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
         }
@@ -43,6 +56,7 @@ namespace CCC.Combat
             Health collidedObject = other.GetComponent<Health>();
 
             if (collidedObject == null) return;
+            if (collidedObject.IsDead) return;
             if (collidedObject != _target) return;
 
             _target.TakeDamage(_damage);
