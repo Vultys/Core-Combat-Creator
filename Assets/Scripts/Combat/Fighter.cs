@@ -8,6 +8,7 @@ namespace CCC.Combat
     {
         [Header("Settings")]
         [SerializeField] private float _timeBetweenAttacks = 1f;
+        [SerializeField] private string _defaultWeaponName = "Unarmed";
 
         [Header("Components")]
         [SerializeField] private Mover _mover;
@@ -31,7 +32,8 @@ namespace CCC.Combat
 
         private void Start()
         {
-            EquipWeapon(_defaultWeapon);
+            Weapon weapon = Resources.Load<Weapon>(_defaultWeaponName);
+            EquipWeapon(weapon);
         }
 
         private void Update()
