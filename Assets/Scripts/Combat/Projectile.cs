@@ -10,7 +10,13 @@ namespace CCC.Combat
 
         [SerializeField] private bool _isHoming = false;
 
+        [SerializeField] private float _maxLifeTime = 10f;
+
+        [SerializeField] private float _lifeAfterImpact = 2f;
+
         [SerializeField] private GameObject _hitEffect = null;
+
+        [SerializeField] private GameObject[] _destroyOnHit = null;
 
         private Health _target = null;
 
@@ -40,6 +46,8 @@ namespace CCC.Combat
         {
             _target = target;
             _damage = damage;
+
+            Destroy(gameObject, _maxLifeTime);
         }
 
         private Vector3 GetAimLocation()
@@ -64,12 +72,19 @@ namespace CCC.Combat
 
             _target.TakeDamage(_damage);
 
-            if(_hitEffect != null)
+            _speed = 0f;
+
+            if (_hitEffect != null)
             {
                 Instantiate(_hitEffect, GetAimLocation(), transform.rotation);
             }
 
-            Destroy(gameObject);
+            for (int i = 0; i < _destroyOnHit.Length; i++)
+            {
+                Destroy(_destroyOnHit[i]);
+            }
+
+            Destroy(gameObject, _lifeAfterImpact);
         }
     }
 }
