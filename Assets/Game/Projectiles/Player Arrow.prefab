@@ -10,8 +10,14 @@ PrefabInstance:
     - target: {fileID: 3699214351459427540, guid: e933aa298506ac0468da6994ea5277df,
         type: 3}
       propertyPath: m_Name
-      value: PlayerArrow
+      value: Player Arrow
       objectReference: {fileID: 0}
+    - target: {fileID: 8817545523642135630, guid: e933aa298506ac0468da6994ea5277df,
+        type: 3}
+      propertyPath: _hitEffect
+      value: 
+      objectReference: {fileID: 7335219870416359449, guid: f115be9e2b14eac478518738291dae8e,
+        type: 3}
     - target: {fileID: 1659690379393228475, guid: e933aa298506ac0468da6994ea5277df,
         type: 3}
       propertyPath: m_LocalPosition.x

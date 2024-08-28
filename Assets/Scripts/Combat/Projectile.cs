@@ -1,4 +1,5 @@
 ﻿using CCC.Core;
+using Cinemachine.Utility;
 using UnityEngine;
 
 namespace CCC.Combat
@@ -8,6 +9,8 @@ namespace CCC.Combat
         [SerializeField] private float _speed = 1f;
 
         [SerializeField] private bool _isHoming = false;
+
+        [SerializeField] private GameObject _hitEffect = null;
 
         private Health _target = null;
 
@@ -60,6 +63,12 @@ namespace CCC.Combat
             if (collidedObject != _target) return;
 
             _target.TakeDamage(_damage);
+
+            if(_hitEffect != null)
+            {
+                Instantiate(_hitEffect, GetAimLocation(), transform.rotation);
+            }
+
             Destroy(gameObject);
         }
     }
