@@ -1,10 +1,11 @@
 ﻿using CCC.Core;
 using CCC.Movement;
+using CCC.Saving;
 using UnityEngine;
 
 namespace CCC.Combat
 {
-    public class Fighter : MonoBehaviour, IAction
+    public class Fighter : MonoBehaviour, IAction, ISaveable
     {
         [Header("Settings")]
         [SerializeField] private float _timeBetweenAttacks = 1f;
@@ -32,8 +33,10 @@ namespace CCC.Combat
 
         private void Start()
         {
-            Weapon weapon = Resources.Load<Weapon>(_defaultWeaponName);
-            EquipWeapon(weapon);
+            if (_currentWeapon == null)
+            {
+                EquipWeapon(_defaultWeapon);
+            }
         }
 
         private void Update()
@@ -80,6 +83,23 @@ namespace CCC.Combat
             return targetToTest != null && !targetToTest.IsDead;
         }
 
+        public void EquipWeapon(Weapon weapon)
+        {
+            weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
+            _currentWeapon = weapon;
+        }
+
+        public object CaptureState()
+        {
+            return _currentWeapon.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            string weaponName = (string) state;
+            EquipWeapon(Resources.Load<Weapon>(weaponName));
+        }
+
         private void TriggerStop()
         {
             _animator.SetTrigger(_stopAttackTriggerHash);
@@ -101,12 +121,6 @@ namespace CCC.Combat
         {
             _animator.SetTrigger(_attackTriggerHash);
             _animator.ResetTrigger(_stopAttackTriggerHash);
-        }
-
-        public void EquipWeapon(Weapon weapon)
-        {
-            weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
-            _currentWeapon = weapon;
         }
 
         /// <summary>

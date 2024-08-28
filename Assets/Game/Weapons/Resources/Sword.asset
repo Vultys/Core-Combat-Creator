@@ -18,3 +18,4 @@ MonoBehaviour:
   _equippedPrefab: {fileID: 423017602232572418, guid: 93f7ef21305e62448ac159f29af1e830,
     type: 3}
   _animatorOverride: {fileID: 22100000, guid: 50cf5ff8a70f62747a08f0a34f54311e, type: 2}
+  _projectile: {fileID: 0}

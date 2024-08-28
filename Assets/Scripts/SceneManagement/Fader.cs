@@ -15,7 +15,7 @@ namespace CCC.SceneManagement
 
         public IEnumerator FadeOut(float time)
         {
-            while (_canvasGroup.alpha < 1f)
+            while (_canvasGroup.alpha < 1)
             {
                 _canvasGroup.alpha += Time.deltaTime / time; 
                 yield return null;
@@ -25,7 +25,7 @@ namespace CCC.SceneManagement
 
         public IEnumerator FadeIn(float time)
         {
-            while (_canvasGroup.alpha > 0f)
+            while (_canvasGroup.alpha > 0)
             {
                 _canvasGroup.alpha -= Time.deltaTime / time; 
                 yield return null;
