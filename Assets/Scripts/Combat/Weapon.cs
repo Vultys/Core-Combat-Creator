@@ -34,9 +34,16 @@ namespace CCC.Combat
                 GameObject weapon = Instantiate(_equippedPrefab, hand);
                 weapon.name = _name;
             }
-            if(_animatorOverride != null)
+
+            var aoc = animator.runtimeAnimatorController as AnimatorOverrideController;
+
+            if (_animatorOverride != null)
             {
                 animator.runtimeAnimatorController = _animatorOverride;
+            }
+            else if (aoc != null)
+            {
+                animator.runtimeAnimatorController = aoc.runtimeAnimatorController;
             }
         }
 
