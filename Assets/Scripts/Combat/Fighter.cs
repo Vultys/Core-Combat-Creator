@@ -1,20 +1,24 @@
 ﻿using CCC.Core;
 using CCC.Movement;
+using CCC.Saving;
 using UnityEngine;
 
 namespace CCC.Combat
 {
-    public class Fighter : MonoBehaviour, IAction
+    public class Fighter : MonoBehaviour, IAction, ISaveable
     {
         [Header("Settings")]
-        [SerializeField] private float _weaponRange = 2f;
         [SerializeField] private float _timeBetweenAttacks = 1f;
-        [SerializeField] private float _damage = 10f;
+        [SerializeField] private string _defaultWeaponName = "Unarmed";
 
         [Header("Components")]
         [SerializeField] private Mover _mover;
         [SerializeField] private ActionScheduler _scheduler;
         [SerializeField] private Animator _animator;
+        [SerializeField] private Transform _rightHandTransform = null;
+        [SerializeField] private Transform _leftHandTransform = null;
+        [SerializeField] private Weapon _defaultWeapon = null;
+
         private float _timeSinceLastAttack = Mathf.Infinity;
 
         private Health _target; 
@@ -23,7 +27,17 @@ namespace CCC.Combat
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
         
-        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _weaponRange;
+        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon?.Range;
+
+        private Weapon _currentWeapon = null;
+
+        private void Start()
+        {
+            if (_currentWeapon == null)
+            {
+                EquipWeapon(_defaultWeapon);
+            }
+        }
 
         private void Update()
         {
@@ -58,12 +72,6 @@ namespace CCC.Combat
             _mover.Cancel();
         }
 
-        private void TriggerStop()
-        {
-            _animator.SetTrigger(_stopAttackTriggerHash);
-            _animator.ResetTrigger(_attackTriggerHash);
-        }
-
         public bool CanAttack(GameObject combatTarget) 
         {
             if(combatTarget == null)
@@ -73,6 +81,29 @@ namespace CCC.Combat
 
             Health targetToTest = combatTarget.GetComponent<Health>();
             return targetToTest != null && !targetToTest.IsDead;
+        }
+
+        public void EquipWeapon(Weapon weapon)
+        {
+            weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
+            _currentWeapon = weapon;
+        }
+
+        public object CaptureState()
+        {
+            return _currentWeapon.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            string weaponName = (string) state;
+            EquipWeapon(Resources.Load<Weapon>(weaponName));
+        }
+
+        private void TriggerStop()
+        {
+            _animator.SetTrigger(_stopAttackTriggerHash);
+            _animator.ResetTrigger(_attackTriggerHash);
         }
 
         private void AttackBehaviour()
@@ -97,7 +128,24 @@ namespace CCC.Combat
         /// </summary>
         private void Hit()
         {
-            _target?.TakeDamage(_damage);
+            if (_target == null) return;
+
+            if (_currentWeapon.HasProjectile)
+            {
+                _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target);
+            }
+            else
+            {
+                _target.TakeDamage(_currentWeapon.Damage);
+            }
+        }
+
+        /// <summary>
+        /// Animation event
+        /// </summary>
+        private void Shoot()
+        {
+            Hit();
         }
     }
 }

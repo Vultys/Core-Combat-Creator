@@ -51,10 +51,10 @@ namespace CCC.SceneManagement
             DontDestroyOnLoad(gameObject);
 
             Fader fader = FindObjectOfType<Fader>();
-
+            SavingWrapper saving = FindObjectOfType<SavingWrapper>(); 
+            
             yield return fader.FadeOut(_fadeOutDuration);
 
-            SavingWrapper saving = FindObjectOfType<SavingWrapper>();
             saving.Save();
 
             yield return SceneManager.LoadSceneAsync(_sceneToLoad);
