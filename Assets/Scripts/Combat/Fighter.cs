@@ -1,6 +1,7 @@
 ﻿using CCC.Core;
 using CCC.Movement;
 using CCC.Saving;
+using CCC.Attributes;
 using UnityEngine;
 
 namespace CCC.Combat

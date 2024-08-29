@@ -1,7 +1,9 @@
+using CCC.Core;
 using CCC.Saving;
+using CCC.Stats;
 using UnityEngine;
 
-namespace CCC.Core
+namespace CCC.Attributes
 {    
     public class Health : MonoBehaviour, ISaveable
     {
@@ -12,6 +14,11 @@ namespace CCC.Core
         private bool _isDead = false;
 
         public bool IsDead => _isDead;
+
+        private void Start()
+        {
+            _healthPoints = GetComponent<BaseStats>().GetHealth();
+        }
 
         public void TakeDamage(float damage)
         {

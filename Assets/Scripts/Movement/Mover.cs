@@ -3,7 +3,7 @@ using CCC.Core;
 using UnityEngine;
 using UnityEngine.AI;
 using CCC.Saving;
-using System.Collections.Generic;
+using CCC.Attributes;
 namespace CCC.Movement
 {
     public class Mover : MonoBehaviour, IAction, ISaveable

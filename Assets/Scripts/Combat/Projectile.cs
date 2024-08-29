@@ -1,5 +1,4 @@
-﻿using CCC.Core;
-using Cinemachine.Utility;
+﻿using CCC.Attributes;
 using UnityEngine;
 
 namespace CCC.Combat

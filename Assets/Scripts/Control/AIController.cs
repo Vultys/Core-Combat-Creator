@@ -1,4 +1,4 @@
-﻿using System;
+﻿using CCC.Attributes;
 using CCC.Combat;
 using CCC.Core;
 using CCC.Movement;

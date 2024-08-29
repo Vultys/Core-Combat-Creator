@@ -1,4 +1,4 @@
-﻿using CCC.Core;
+﻿using CCC.Attributes;
 using UnityEngine;
 
 namespace CCC.Combat
