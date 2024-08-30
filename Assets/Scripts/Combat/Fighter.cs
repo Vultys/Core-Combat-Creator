@@ -22,8 +22,6 @@ namespace CCC.Combat
 
         private float _timeSinceLastAttack = Mathf.Infinity;
 
-        private Health _target; 
-
         private int _attackTriggerHash = Animator.StringToHash("attack");
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
@@ -31,6 +29,10 @@ namespace CCC.Combat
         private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon?.Range;
 
         private Weapon _currentWeapon = null;
+
+        private Health _target;
+
+        public Health Target => _target;
 
         private void Start()
         {
