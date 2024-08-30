@@ -14,9 +14,9 @@ namespace CCC.Stats
         {
             foreach(var character in _characterClasses)
             {
-                if (character.Class == characterClass)
+                if (character.characterClass == characterClass)
                 {
-                    return character.Healths[level - 1];
+                    //eturn character.Stats[level - 1];
                 }
             }
 
@@ -26,12 +26,15 @@ namespace CCC.Stats
         [Serializable]
         class ProgressionCharacterClass
         {
-            [SerializeField] private CharacterClass _class;
-            [SerializeField] private float[] healths;
+            public CharacterClass characterClass;
+            public ProgressionStat stats;
+        }
 
-            public CharacterClass Class => _class;
-
-            public float[] Healths => healths;
+        [Serializable]
+        public class ProgressionStat
+        {
+            public Stat stat;
+            public float[] levels;
         }
     }
 }
