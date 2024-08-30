@@ -27,16 +27,7 @@ namespace CCC.Attributes
             {
                 Die();
             }
-        }    
-
-        private void Die()
-        {
-            if(_isDead) return;
-
-            _isDead = true;
-            GetComponent<Animator>().SetTrigger("die");
-            GetComponent<ActionScheduler>().CancelCurrentAction();
-        }
+        }  
         
         public object CaptureState()
         {
@@ -51,6 +42,22 @@ namespace CCC.Attributes
             {
                 Die();
             }
+        }
+
+        public float GetPercentage()
+        {
+            float levelHealthPoints = GetComponent<BaseStats>().GetHealth();
+
+            return (_healthPoints / levelHealthPoints) * 100;
+        }
+     
+        private void Die()
+        {
+            if (_isDead) return;
+
+            _isDead = true;
+            GetComponent<Animator>().SetTrigger("die");
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
     }
 }
