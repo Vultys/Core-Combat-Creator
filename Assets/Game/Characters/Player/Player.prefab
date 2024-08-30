@@ -29,6 +29,19 @@ MonoBehaviour:
   _mover: {fileID: 8341434295834665025}
   _fighter: {fileID: 5963535985098479907}
   _health: {fileID: 6312583234197211675}
+--- !u!114 &770930401045774937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7430684559824956375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97465187cb4f09448a2f0ac9d7fb173a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _experiencePoints: 0
 --- !u!1001 &278764466368306622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -106,6 +119,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: _characterClass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5844795661910770845, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
       propertyPath: _weaponPrefab
@@ -154,11 +172,6 @@ PrefabInstance:
         type: 3}
       propertyPath: uniqueIdentifier
       value: player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
-        type: 3}
-      propertyPath: _characterClass
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf, type: 3}

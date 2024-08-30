@@ -20,11 +20,12 @@ namespace CCC.Attributes
             _healthPoints = GetComponent<BaseStats>().GetHealth();
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(GameObject instigator, float damage)
         {
             _healthPoints = Mathf.Max(_healthPoints - damage, 0);
             if(_healthPoints == 0)
             {
+                AwardExperience(instigator);
                 Die();
             }
         }  
@@ -58,6 +59,14 @@ namespace CCC.Attributes
             _isDead = true;
             GetComponent<Animator>().SetTrigger("die");
             GetComponent<ActionScheduler>().CancelCurrentAction();
+        }
+
+        private void AwardExperience(GameObject instigator)
+        {
+            var experience = instigator.GetComponent<Experience>();
+            if (experience == null) return;
+
+            experience.GainPoints(GetComponent<BaseStats>().GetExperienceReward());
         }
     }
 }
