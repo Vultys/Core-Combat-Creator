@@ -1,7 +1,7 @@
 ﻿using CCC.Saving;
 using UnityEngine;
 
-namespace CCC.Attributes
+namespace CCC.Stats
 {
     public class Experience : MonoBehaviour, ISaveable
     {

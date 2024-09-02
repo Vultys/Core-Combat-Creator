@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CCC.Attributes
+namespace CCC.Stats
 {
     public class ExperienceDisplay : MonoBehaviour
     {

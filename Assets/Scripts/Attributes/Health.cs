@@ -66,7 +66,7 @@ namespace CCC.Attributes
             var experience = instigator.GetComponent<Experience>();
             if (experience == null) return;
 
-            experience.GainPoints(GetComponent<BaseStats>().GetStat(Stat.Experience));
+            experience.GainPoints(GetComponent<BaseStats>().GetStat(Stat.ExperienceReward));
         }
     }
 }

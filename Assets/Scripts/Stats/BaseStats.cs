@@ -11,6 +11,36 @@ namespace CCC.Stats
 
         [SerializeField] private Progression _progression = null;
 
+        private void Update()
+        {
+            if(_characterClass == CharacterClass.Player)
+            {
+                print(GetLevel());
+            }
+        }
+
         public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, _startingLevel);
+
+        public int GetLevel()
+        {
+            Experience experience = GetComponent<Experience>();
+
+            if (experience == null) return _startingLevel;
+
+            float currentXP = experience.ExperiencePoints;
+
+            int penultimateLevel = _progression.GetLevels(Stat.ExperienceToLevelUp, CharacterClass.Player);
+
+            for(int level = 1; level <= penultimateLevel; level++)
+            {
+                float xpToLevelUp = _progression.GetStat(Stat.ExperienceToLevelUp, _characterClass, level);
+                if(xpToLevelUp > currentXP)
+                {
+                    return level;
+                }
+            }
+
+            return penultimateLevel + 1;
+        }
     }
 }

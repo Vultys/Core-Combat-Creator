@@ -25,6 +25,13 @@ namespace CCC.Stats
             return levels[level - 1];
         }
 
+        public int GetLevels(Stat stat, CharacterClass characterClass)
+        {
+            BuildLookup();
+
+            return _lookupTable[characterClass][stat].Length;
+        }
+
         private void BuildLookup()
         {
             if(_lookupTable != null) return;
