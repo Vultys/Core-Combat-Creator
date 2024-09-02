@@ -16,7 +16,7 @@ namespace CCC.Stats
 
         private void Update()
         {
-            _levelText.text = string.Format("{0}", _playerStats.GetLevel());
+            _levelText.text = string.Format("{0}", _playerStats.CurrentLevel);
         }
     }
 }

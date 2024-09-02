@@ -11,9 +11,38 @@ namespace CCC.Stats
 
         [SerializeField] private Progression _progression = null;
 
-        public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, _startingLevel);
+        private Experience _experience;
 
-        public int GetLevel()
+        private int _currentLevel = 0;
+
+        public int CurrentLevel {
+            get
+            {
+                if(_currentLevel < 1)
+                {
+                    _currentLevel = CalculateLevel();
+                }
+
+                return _currentLevel;
+            }
+        }
+
+        private void Start()
+        {
+            _experience = GetComponent<Experience>();
+            if (_experience == null) return;
+
+            _experience.OnGainingPoints += UpdateLevel;
+        }
+
+        private void OnDestroy()
+        {
+            _experience.OnGainingPoints -= UpdateLevel;
+        }
+
+        public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, CurrentLevel);
+
+        private int CalculateLevel()
         {
             Experience experience = GetComponent<Experience>();
 
@@ -33,6 +62,17 @@ namespace CCC.Stats
             }
 
             return penultimateLevel + 1;
+        }
+
+        private void UpdateLevel()
+        {
+            int newLevel = CalculateLevel();
+
+            if (newLevel > _currentLevel)
+            {
+                _currentLevel = newLevel;
+                print("Levelled Up!");
+            }
         }
     }
 }

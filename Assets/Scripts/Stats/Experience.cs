@@ -1,4 +1,5 @@
 ﻿using CCC.Saving;
+using System;
 using UnityEngine;
 
 namespace CCC.Stats
@@ -9,9 +10,12 @@ namespace CCC.Stats
 
         public float ExperiencePoints => _experiencePoints;
 
+        public event Action OnGainingPoints;
+
         public void GainPoints(float experience)
         {
             _experiencePoints += experience;
+            OnGainingPoints?.Invoke();
         }
 
         public object CaptureState()
