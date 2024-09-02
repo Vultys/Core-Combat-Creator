@@ -37,6 +37,8 @@ namespace CCC.Stats
 
         private void OnDestroy()
         {
+            if (_experience == null) return;
+
             _experience.OnGainingPoints -= UpdateLevel;
         }
 
