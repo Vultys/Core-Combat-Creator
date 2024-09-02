@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,23 +9,39 @@ namespace CCC.Stats
     {
         [SerializeField] private ProgressionCharacterClass[] _characterClasses = null;
 
+        private Dictionary<CharacterClass, Dictionary<Stat, float[]>> _lookupTable = null;
+
         public float GetStat(Stat stat, CharacterClass characterClass, int level)
         {
-            foreach (var character in _characterClasses)
+            BuildLookup();
+
+            float[] levels = _lookupTable[characterClass][stat];
+
+            if(levels.Length < level)
             {
-                if (character.characterClass != characterClass) continue;
-
-                foreach (var progressionStat in character.stats)
-                {
-                    if (progressionStat.stat != stat) continue;
-
-                    if (progressionStat.levels.Length < level) continue;
-
-                    return progressionStat.levels[level - 1];
-                }
+                return 0;
             }
 
-            return 0;
+            return levels[level - 1];
+        }
+
+        private void BuildLookup()
+        {
+            if(_lookupTable != null) return;
+
+            _lookupTable = new Dictionary<CharacterClass, Dictionary<Stat, float[]>>();
+
+            foreach(var characterClass in _characterClasses)
+            {
+                Dictionary<Stat, float[]> innerDictionary = new Dictionary<Stat, float[]>();
+
+                foreach (var progressionStat in characterClass.stats)
+                {
+                    innerDictionary[progressionStat.stat] = progressionStat.levels;
+                }
+
+                _lookupTable[characterClass.characterClass] = innerDictionary;
+            }
         }
 
         [Serializable]

@@ -17,7 +17,7 @@ namespace CCC.Attributes
 
         private void Update()
         {
-            _experienceText.text = String.Format("{0}", _experince.ExperiencePoints);
+            _experienceText.text = string.Format("{0}", _experince.ExperiencePoints);
         }
     }
 }
