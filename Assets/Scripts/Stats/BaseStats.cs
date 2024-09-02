@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CCC.Stats
 {
@@ -10,6 +11,8 @@ namespace CCC.Stats
         [SerializeField] private CharacterClass _characterClass = CharacterClass.None;
 
         [SerializeField] private Progression _progression = null;
+
+        [SerializeField] private GameObject _levelUpParticleEffect = null;
 
         private Experience _experience;
 
@@ -26,6 +29,8 @@ namespace CCC.Stats
                 return _currentLevel;
             }
         }
+
+        public event Action OnLevelUp;
 
         private void Start()
         {
@@ -73,8 +78,14 @@ namespace CCC.Stats
             if (newLevel > _currentLevel)
             {
                 _currentLevel = newLevel;
-                print("Levelled Up!");
+                LevelUpEffect();
+                OnLevelUp?.Invoke();
             }
+        }
+
+        private void LevelUpEffect()
+        {
+            Instantiate(_levelUpParticleEffect, transform);
         }
     }
 }

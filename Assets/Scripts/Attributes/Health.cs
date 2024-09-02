@@ -7,18 +7,36 @@ namespace CCC.Attributes
 {    
     public class Health : MonoBehaviour, ISaveable
     {
+        [SerializeField] private float regeneratePercentage = 70f;
+
         private float _healthPoints = -1f;
 
         private int _dieTriggerAnimatorHash = Animator.StringToHash("die");
 
         private bool _isDead = false;
 
+        private BaseStats _baseStats = null;
+
         public bool IsDead => _isDead;
 
         private void Start()
         {
-            if(_healthPoints >= 0f) return;
-            _healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            _baseStats = GetComponent<BaseStats>();
+            if (_baseStats != null)
+            {
+                _baseStats.OnLevelUp += RegenerateHealth;
+            }
+
+            if (_healthPoints >= 0f) return;
+            _healthPoints = _baseStats.GetStat(Stat.Health);
+        }
+
+        private void OnDestroy()
+        {
+            if( _baseStats != null )
+            {
+                _baseStats.OnLevelUp -= RegenerateHealth;
+            }
         }
 
         public void TakeDamage(GameObject instigator, float damage)
@@ -48,7 +66,7 @@ namespace CCC.Attributes
 
         public float GetPercentage()
         {
-            float levelHealthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            float levelHealthPoints = _baseStats.GetStat(Stat.Health);
 
             return (_healthPoints / levelHealthPoints) * 100;
         }
@@ -67,7 +85,13 @@ namespace CCC.Attributes
             var experience = instigator.GetComponent<Experience>();
             if (experience == null) return;
 
-            experience.GainPoints(GetComponent<BaseStats>().GetStat(Stat.ExperienceReward));
+            experience.GainPoints(_baseStats.GetStat(Stat.ExperienceReward));
+        }
+
+        private void RegenerateHealth()
+        {
+            float regeneratingHealth = _baseStats.GetStat(Stat.Health) * (regeneratePercentage / 100);
+            _healthPoints = Mathf.Max(regeneratingHealth, _healthPoints);
         }
     }
 }
