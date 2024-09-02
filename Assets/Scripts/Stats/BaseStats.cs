@@ -11,14 +11,6 @@ namespace CCC.Stats
 
         [SerializeField] private Progression _progression = null;
 
-        private void Update()
-        {
-            if(_characterClass == CharacterClass.Player)
-            {
-                print(GetLevel());
-            }
-        }
-
         public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, _startingLevel);
 
         public int GetLevel()

@@ -7,7 +7,7 @@ namespace CCC.Attributes
 {    
     public class Health : MonoBehaviour, ISaveable
     {
-        [SerializeField] private float _healthPoints = 100f;
+        private float _healthPoints = -1f;
 
         private int _dieTriggerAnimatorHash = Animator.StringToHash("die");
 
@@ -17,6 +17,7 @@ namespace CCC.Attributes
 
         private void Start()
         {
+            if(_healthPoints >= 0f) return;
             _healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
         }
 

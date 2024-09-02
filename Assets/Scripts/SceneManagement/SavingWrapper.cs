@@ -31,13 +31,17 @@ namespace CCC.SceneManagement
         /// </summary>
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.L))
             {
                 Load();
             }
-            if(Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S))
             {
                 Save();
+            }
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                Delete();
             }
         }
 
@@ -49,6 +53,11 @@ namespace CCC.SceneManagement
         public void Load()
         {
             _savingSystem.Load(_defaultSaveFile);
+        }
+
+        public void Delete()
+        {
+            _savingSystem.Delete(_defaultSaveFile);
         }
     }
 }
