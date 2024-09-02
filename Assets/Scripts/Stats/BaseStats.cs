@@ -13,11 +13,6 @@ namespace CCC.Stats
 
         [SerializeField] private Progression _progression = null;
 
-        public float GetHealth() => _progression.GetHealth(_characterClass, _startingLevel);
-
-        public float GetExperienceReward()
-        {
-            return 10;
-        }
+        public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, _startingLevel);
     }
 }

@@ -10,13 +10,19 @@ namespace CCC.Stats
     {
         [SerializeField] private ProgressionCharacterClass[] _characterClasses = null;
 
-        public float GetHealth(CharacterClass characterClass, int level)
+        public float GetStat(Stat stat, CharacterClass characterClass, int level)
         {
-            foreach(var character in _characterClasses)
+            foreach (var character in _characterClasses)
             {
-                if (character.characterClass == characterClass)
+                if (character.characterClass != characterClass) continue;
+
+                foreach (var progressionStat in character.stats)
                 {
-                    //eturn character.Stats[level - 1];
+                    if (progressionStat.stat != stat) continue;
+
+                    if (progressionStat.levels.Length < level) continue;
+
+                    return progressionStat.levels[level - 1];
                 }
             }
 
@@ -27,7 +33,7 @@ namespace CCC.Stats
         class ProgressionCharacterClass
         {
             public CharacterClass characterClass;
-            public ProgressionStat stats;
+            public ProgressionStat[] stats;
         }
 
         [Serializable]

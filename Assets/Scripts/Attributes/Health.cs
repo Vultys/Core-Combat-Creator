@@ -17,7 +17,7 @@ namespace CCC.Attributes
 
         private void Start()
         {
-            _healthPoints = GetComponent<BaseStats>().GetHealth();
+            _healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
         }
 
         public void TakeDamage(GameObject instigator, float damage)
@@ -47,7 +47,7 @@ namespace CCC.Attributes
 
         public float GetPercentage()
         {
-            float levelHealthPoints = GetComponent<BaseStats>().GetHealth();
+            float levelHealthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
 
             return (_healthPoints / levelHealthPoints) * 100;
         }
@@ -66,7 +66,7 @@ namespace CCC.Attributes
             var experience = instigator.GetComponent<Experience>();
             if (experience == null) return;
 
-            experience.GainPoints(GetComponent<BaseStats>().GetExperienceReward());
+            experience.GainPoints(GetComponent<BaseStats>().GetStat(Stat.Experience));
         }
     }
 }

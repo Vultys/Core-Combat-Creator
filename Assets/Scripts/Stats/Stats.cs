@@ -6,6 +6,7 @@ namespace CCC.Stats
 {
     public enum Stat
     {
-        Health
+        Health,
+        Experience
     }
 }
