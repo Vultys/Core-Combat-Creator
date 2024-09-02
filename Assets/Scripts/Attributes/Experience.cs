@@ -1,16 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using CCC.Saving;
 using UnityEngine;
 
 namespace CCC.Attributes
 {
-    public class Experience : MonoBehaviour
+    public class Experience : MonoBehaviour, ISaveable
     {
         [SerializeField] private float _experiencePoints;
 
         public void GainPoints(float experience)
         {
             _experiencePoints += experience;
+        }
+
+        public object CaptureState()
+        {
+            return _experiencePoints;
+        }
+
+        public void RestoreState(object state)
+        {
+            _experiencePoints = (float)state;
         }
     }
 }
