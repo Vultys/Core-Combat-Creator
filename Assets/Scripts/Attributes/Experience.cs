@@ -7,6 +7,8 @@ namespace CCC.Attributes
     {
         [SerializeField] private float _experiencePoints;
 
+        public float ExperiencePoints => _experiencePoints;
+
         public void GainPoints(float experience)
         {
             _experiencePoints += experience;
