@@ -4,10 +4,11 @@ using CCC.Saving;
 using CCC.Attributes;
 using UnityEngine;
 using CCC.Stats;
+using System.Collections.Generic;
 
 namespace CCC.Combat
 {
-    public class Fighter : MonoBehaviour, IAction, ISaveable
+    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
     {
         [Header("Settings")]
         [SerializeField] private float _timeBetweenAttacks = 1f;
@@ -69,13 +70,6 @@ namespace CCC.Combat
             _target = combatTarget.GetComponent<Health>();
         }
 
-        public void Cancel()
-        {
-            TriggerStop();
-            _target = null;
-            _mover.Cancel();
-        }
-
         public bool CanAttack(GameObject combatTarget) 
         {
             if(combatTarget == null)
@@ -93,6 +87,13 @@ namespace CCC.Combat
             _currentWeapon = weapon;
         }
 
+        public void Cancel()
+        {
+            TriggerStop();
+            _target = null;
+            _mover.Cancel();
+        }
+
         public object CaptureState()
         {
             return _currentWeapon.name;
@@ -102,6 +103,14 @@ namespace CCC.Combat
         {
             string weaponName = (string) state;
             EquipWeapon(Resources.Load<Weapon>(weaponName));
+        }
+
+        public IEnumerable<float> GetAdditiveModifier(Stat stat)
+        {
+            if(stat == Stat.Damage)
+            {
+                yield return _currentWeapon.Damage;
+            }
         }
 
         private void TriggerStop()

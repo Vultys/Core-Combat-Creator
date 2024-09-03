@@ -47,7 +47,7 @@ namespace CCC.Stats
             _experience.OnGainingPoints -= UpdateLevel;
         }
 
-        public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, CurrentLevel);
+        public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, CurrentLevel) + GetAdditiveModifier(stat);
 
         private int CalculateLevel()
         {
@@ -86,6 +86,21 @@ namespace CCC.Stats
         private void LevelUpEffect()
         {
             Instantiate(_levelUpParticleEffect, transform);
+        }
+
+        private float GetAdditiveModifier(Stat stat)
+        {
+            float result = 0f;
+
+            foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
+            {
+                foreach(float modifier in provider.GetAdditiveModifier(stat))
+                {
+                    result += modifier;
+                }
+            }
+
+            return result;
         }
     }
 }
