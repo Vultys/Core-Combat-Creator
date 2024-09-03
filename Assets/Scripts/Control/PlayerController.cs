@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using CCC.Movement;
 using CCC.Combat;
-using CCC.Core;
+using CCC.Attributes;
 
 namespace CCC.Control 
 {

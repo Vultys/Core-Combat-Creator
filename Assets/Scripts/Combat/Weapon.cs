@@ -1,4 +1,4 @@
-﻿using CCC.Core;
+﻿using CCC.Attributes;
 using UnityEngine;
 
 namespace CCC.Combat
@@ -8,7 +8,8 @@ namespace CCC.Combat
     {
         [Header("Settings")]
         [SerializeField] private float _range = 2f;
-        [SerializeField] private float _damage = 10f;
+        [SerializeField] private float _damage = 5f;
+        [SerializeField] private float _percentageBonus = 0f;
         [SerializeField] private bool _isRightHanded = true;
 
         [Header("Prefabs")]
@@ -21,6 +22,8 @@ namespace CCC.Combat
         public float Range => _range;
 
         public float Damage => _damage;
+        
+        public float PercentageBonus => _percentageBonus;
 
         public bool HasProjectile => _projectile != null;
 
@@ -47,10 +50,10 @@ namespace CCC.Combat
             }
         }
 
-        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target)
+        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target, GameObject instigator, float calculatedDamage)
         {
             Projectile projectile = Instantiate(_projectile, ChooseHand(rightHand, leftHand).position, Quaternion.identity);
-            projectile.SetTarget(target, _damage);
+            projectile.SetTarget(target, instigator, calculatedDamage);
         }
 
         private Transform ChooseHand(Transform rightHand, Transform leftHand) => _isRightHanded ? rightHand : leftHand;

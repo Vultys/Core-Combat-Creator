@@ -1,11 +1,15 @@
 ﻿using CCC.Core;
 using CCC.Movement;
 using CCC.Saving;
+using CCC.Attributes;
 using UnityEngine;
+using CCC.Stats;
+using System.Collections.Generic;
+using GameDevTV.Utils;
 
 namespace CCC.Combat
 {
-    public class Fighter : MonoBehaviour, IAction, ISaveable
+    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
     {
         [Header("Settings")]
         [SerializeField] private float _timeBetweenAttacks = 1f;
@@ -21,22 +25,26 @@ namespace CCC.Combat
 
         private float _timeSinceLastAttack = Mathf.Infinity;
 
-        private Health _target; 
-
         private int _attackTriggerHash = Animator.StringToHash("attack");
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
         
-        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon?.Range;
+        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon.value.Range;
 
-        private Weapon _currentWeapon = null;
+        private LazyValue<Weapon> _currentWeapon = null;
+
+        private Health _target;
+
+        public Health Target => _target;
+
+        private void Awake()
+        {
+            _currentWeapon = new LazyValue<Weapon>(SetDefaultWeapon);
+        }
 
         private void Start()
         {
-            if (_currentWeapon == null)
-            {
-                EquipWeapon(_defaultWeapon);
-            }
+            _currentWeapon.ForceInit();
         }
 
         private void Update()
@@ -65,13 +73,6 @@ namespace CCC.Combat
             _target = combatTarget.GetComponent<Health>();
         }
 
-        public void Cancel()
-        {
-            TriggerStop();
-            _target = null;
-            _mover.Cancel();
-        }
-
         public bool CanAttack(GameObject combatTarget) 
         {
             if(combatTarget == null)
@@ -85,19 +86,42 @@ namespace CCC.Combat
 
         public void EquipWeapon(Weapon weapon)
         {
-            weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
-            _currentWeapon = weapon;
+            _currentWeapon.value = weapon;
+            AttachWeapon(weapon);
+        }
+
+        public void Cancel()
+        {
+            TriggerStop();
+            _target = null;
+            _mover.Cancel();
         }
 
         public object CaptureState()
         {
-            return _currentWeapon.name;
+            return _currentWeapon.value.name;
         }
 
         public void RestoreState(object state)
         {
             string weaponName = (string) state;
             EquipWeapon(Resources.Load<Weapon>(weaponName));
+        }
+
+        public IEnumerable<float> GetAdditiveModifiers(Stat stat)
+        {
+            if(stat == Stat.Damage)
+            {
+                yield return _currentWeapon.value.Damage;
+            }
+        }
+
+        public IEnumerable<float> GetPercentageModifiers(Stat stat)
+        {
+            if (stat == Stat.Damage)
+            {
+                yield return _currentWeapon.value.PercentageBonus;
+            }
         }
 
         private void TriggerStop()
@@ -123,6 +147,13 @@ namespace CCC.Combat
             _animator.ResetTrigger(_stopAttackTriggerHash);
         }
 
+        private void AttachWeapon(Weapon weapon) => weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
+
+        private Weapon SetDefaultWeapon()
+        { 
+            AttachWeapon(_defaultWeapon);
+            return _defaultWeapon;
+        }
         /// <summary>
         /// Animation event
         /// </summary>
@@ -130,13 +161,15 @@ namespace CCC.Combat
         {
             if (_target == null) return;
 
-            if (_currentWeapon.HasProjectile)
+            float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
+
+            if (_currentWeapon.value.HasProjectile)
             {
-                _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target);
+                _currentWeapon.value.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target, gameObject, damage);
             }
             else
             {
-                _target.TakeDamage(_currentWeapon.Damage);
+                _target.TakeDamage(gameObject, damage);
             }
         }
 

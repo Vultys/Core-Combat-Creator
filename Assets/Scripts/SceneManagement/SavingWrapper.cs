@@ -12,32 +12,29 @@ namespace CCC.SceneManagement
 
         [SerializeField] private SavingSystem _savingSystem;
 
-        const string _defaultSaveFile = "save";
+        private const string _defaultSaveFile = "save";
 
-        /// <summary>
-        /// Start is called on the frame when a script is enabled just before
-        /// any of the Update methods is called the first time.
-        /// </summary>
-        IEnumerator Start()
+        private void Awake()
         {
-            Fader fader = FindObjectOfType<Fader>();
-            fader.FadeOutImmediate();
-            yield return _savingSystem.LoadLastScene(_defaultSaveFile);
-            yield return fader.FadeIn(_fadeInTime);
+            StartCoroutine(LoadLastScene());
         }
 
         /// <summary>
         /// Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
-        void Update()
+        private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.L))
             {
                 Load();
             }
-            if(Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S))
             {
                 Save();
+            }
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                Delete();
             }
         }
 
@@ -49,6 +46,19 @@ namespace CCC.SceneManagement
         public void Load()
         {
             _savingSystem.Load(_defaultSaveFile);
+        }
+
+        public void Delete()
+        {
+            _savingSystem.Delete(_defaultSaveFile);
+        }
+
+        private IEnumerator LoadLastScene()
+        {
+            yield return _savingSystem.LoadLastScene(_defaultSaveFile);
+            Fader fader = FindObjectOfType<Fader>();
+            fader.FadeOutImmediate();
+            yield return fader.FadeIn(_fadeInTime);
         }
     }
 }

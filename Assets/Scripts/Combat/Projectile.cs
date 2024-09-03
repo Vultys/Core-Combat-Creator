@@ -1,5 +1,4 @@
-﻿using CCC.Core;
-using Cinemachine.Utility;
+﻿using CCC.Attributes;
 using UnityEngine;
 
 namespace CCC.Combat
@@ -19,6 +18,8 @@ namespace CCC.Combat
         [SerializeField] private GameObject[] _destroyOnHit = null;
 
         private Health _target = null;
+
+        private GameObject _instigator = null;
 
         private float _damage = 0f;
 
@@ -42,10 +43,11 @@ namespace CCC.Combat
             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
         }
 
-        public void SetTarget(Health target, float damage)
+        public void SetTarget(Health target, GameObject instigator, float damage)
         {
             _target = target;
             _damage = damage;
+            _instigator = instigator;
 
             Destroy(gameObject, _maxLifeTime);
         }
@@ -70,7 +72,7 @@ namespace CCC.Combat
             if (collidedObject.IsDead) return;
             if (collidedObject != _target) return;
 
-            _target.TakeDamage(_damage);
+            _target.TakeDamage(_instigator, _damage);
 
             _speed = 0f;
 
