@@ -29,7 +29,7 @@ namespace CCC.Combat
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
         
-        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon?.Range;
+        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon.value.Range;
 
         private LazyValue<Weapon> _currentWeapon = null;
 
