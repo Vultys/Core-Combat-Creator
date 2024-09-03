@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameDevTV.Utils;
+using System;
 using UnityEngine;
 
 namespace CCC.Stats
@@ -18,30 +19,21 @@ namespace CCC.Stats
 
         private Experience _experience;
 
-        private int _currentLevel = 0;
+        private LazyValue<int> _currentLevel;
 
-        public int CurrentLevel {
-            get
-            {
-                if(_currentLevel < 1)
-                {
-                    _currentLevel = CalculateLevel();
-                }
-
-                return _currentLevel;
-            }
-        }
+        public int CurrentLevel => _currentLevel.value;
 
         public event Action OnLevelUp;
         
         private void Awake()
         {
             _experience = GetComponent<Experience>();
+            _currentLevel = new LazyValue<int>(CalculateLevel);
         }
 
         private void Start()
         {
-            _currentLevel = CalculateLevel();
+            _currentLevel.ForceInit();
         }
 
         private void OnEnable()
@@ -84,9 +76,9 @@ namespace CCC.Stats
         {
             int newLevel = CalculateLevel();
 
-            if (newLevel > _currentLevel)
+            if (newLevel > _currentLevel.value)
             {
-                _currentLevel = newLevel;
+                _currentLevel.value = newLevel;
                 LevelUpEffect();
                 OnLevelUp?.Invoke();
             }

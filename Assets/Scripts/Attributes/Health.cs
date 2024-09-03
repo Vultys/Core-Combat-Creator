@@ -1,10 +1,11 @@
 using CCC.Core;
 using CCC.Saving;
 using CCC.Stats;
+using GameDevTV.Utils;
 using UnityEngine;
 
 namespace CCC.Attributes
-{    
+{
     public class Health : MonoBehaviour, ISaveable
     {
         [SerializeField] private float regeneratePercentage = 70f;
@@ -13,9 +14,9 @@ namespace CCC.Attributes
 
         private BaseStats _baseStats = null;
 
-        private float _healthPoints = -1f;
+        private LazyValue<float> _healthPoints;
 
-        public float HealthPoints => _healthPoints;
+        public float HealthPoints => _healthPoints.value;
 
         private bool _isDead = false;
         public bool IsDead => _isDead;
@@ -23,13 +24,12 @@ namespace CCC.Attributes
         private void Awake()
         {
             _baseStats = GetComponent<BaseStats>();
+            _healthPoints = new LazyValue<float>(GetInitialHealth);
         }
 
         private void Start()
         {
-            if (_healthPoints >= 0f) return;
-
-            _healthPoints = _baseStats.GetStat(Stat.Health);
+            _healthPoints.ForceInit();
         }
 
         private void OnEnable()
@@ -52,8 +52,8 @@ namespace CCC.Attributes
         {
             print(gameObject.name + " took damage: " + damage);
 
-            _healthPoints = Mathf.Max(_healthPoints - damage, 0);
-            if(_healthPoints == 0)
+            _healthPoints.value = Mathf.Max(_healthPoints.value - damage, 0);
+            if(_healthPoints.value == 0)
             {
                 AwardExperience(instigator);
                 Die();
@@ -64,7 +64,7 @@ namespace CCC.Attributes
         {
             float levelHealthPoints = GetMaxHealthPoints();
 
-            return (_healthPoints / levelHealthPoints) * 100;
+            return (_healthPoints.value / levelHealthPoints) * 100;
         }
         
         public float GetMaxHealthPoints()
@@ -74,14 +74,14 @@ namespace CCC.Attributes
 
         public object CaptureState()
         {
-            return _healthPoints;
+            return _healthPoints.value;
         }
 
         public void RestoreState(object state)
         {
-            _healthPoints = (float)state;
+            _healthPoints.value = (float)state;
 
-            if (_healthPoints == 0)
+            if (_healthPoints.value == 0)
             {
                 Die();
             }
@@ -107,7 +107,9 @@ namespace CCC.Attributes
         private void RegenerateHealth()
         {
             float regeneratingHealth = _baseStats.GetStat(Stat.Health) * (regeneratePercentage / 100);
-            _healthPoints = Mathf.Max(regeneratingHealth, _healthPoints);
+            _healthPoints.value = Mathf.Max(regeneratingHealth, _healthPoints.value);
         }
+
+        private float GetInitialHealth() => _baseStats.GetStat(Stat.Health);
     }
 }

@@ -2,6 +2,7 @@
 using CCC.Combat;
 using CCC.Core;
 using CCC.Movement;
+using GameDevTV.Utils;
 using UnityEngine;
 
 namespace CCC.Control
@@ -30,7 +31,7 @@ namespace CCC.Control
 
         private GameObject _player; 
         
-        private Vector3 _guardPosition;
+        private LazyValue<Vector3> _guardPosition;
 
         private float _timeSinceLastSawPlayer = Mathf.Infinity;
 
@@ -39,11 +40,12 @@ namespace CCC.Control
         private void Awake()
         {
             _player = GameObject.FindWithTag("Player");
+            _guardPosition = new LazyValue<Vector3>(GetGuardPosition);
         }
 
         private void Start()
         {
-            _guardPosition = transform.position;
+            _guardPosition.ForceInit();
         }
 
         private void Update()
@@ -69,6 +71,16 @@ namespace CCC.Control
             UpdateTimers();
         }
 
+        /// <summary>
+        /// Callback to draw gizmos only if the object is selected.
+        /// </summary>
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.blue;
+
+            Gizmos.DrawWireSphere(transform.position, _chaseDistance);
+        }
+
         private void UpdateTimers()
         {
             _timeSinceLastSawPlayer += Time.deltaTime;
@@ -77,7 +89,7 @@ namespace CCC.Control
 
         private void PatrolBehaviour()
         {
-            Vector3 nextPosition = _guardPosition;
+            Vector3 nextPosition = _guardPosition.value;
 
             if(_patrolPath != null)
             {
@@ -117,14 +129,6 @@ namespace CCC.Control
             _fighter.Attack(_player);
         }
 
-        /// <summary>
-        /// Callback to draw gizmos only if the object is selected.
-        /// </summary>
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.blue;
-
-            Gizmos.DrawWireSphere(transform.position, _chaseDistance);
-        }
+        private Vector3 GetGuardPosition() => transform.position;
     }
 }
