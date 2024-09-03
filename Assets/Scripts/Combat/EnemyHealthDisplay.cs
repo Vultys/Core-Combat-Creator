@@ -21,7 +21,7 @@ namespace CCC.Combat
         {
             if(_fighter.Target != null)
             {
-                _healthText.text = String.Format("{0:0}%", _fighter.Target.GetPercentage());
+                _healthText.text = String.Format("{0:0}/{1:0}%", _fighter.Target.HealthPoints, _fighter.Target.GetMaxHealthPoints());
             }
             else
             {

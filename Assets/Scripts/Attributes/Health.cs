@@ -9,14 +9,15 @@ namespace CCC.Attributes
     {
         [SerializeField] private float regeneratePercentage = 70f;
 
-        private float _healthPoints = -1f;
-
         private int _dieTriggerAnimatorHash = Animator.StringToHash("die");
-
-        private bool _isDead = false;
 
         private BaseStats _baseStats = null;
 
+        private float _healthPoints = -1f;
+
+        public float HealthPoints => _healthPoints;
+
+        private bool _isDead = false;
         public bool IsDead => _isDead;
 
         private void Start()
@@ -33,7 +34,7 @@ namespace CCC.Attributes
 
         private void OnDestroy()
         {
-            if( _baseStats != null )
+            if(_baseStats != null)
             {
                 _baseStats.OnLevelUp -= RegenerateHealth;
             }
@@ -41,6 +42,8 @@ namespace CCC.Attributes
 
         public void TakeDamage(GameObject instigator, float damage)
         {
+            print(gameObject.name + " took damage: " + damage);
+
             _healthPoints = Mathf.Max(_healthPoints - damage, 0);
             if(_healthPoints == 0)
             {
@@ -48,7 +51,19 @@ namespace CCC.Attributes
                 Die();
             }
         }  
+
+        public float GetPercentage()
+        {
+            float levelHealthPoints = GetMaxHealthPoints();
+
+            return (_healthPoints / levelHealthPoints) * 100;
+        }
         
+        public float GetMaxHealthPoints()
+        {
+            return _baseStats.GetStat(Stat.Health);
+        }
+
         public object CaptureState()
         {
             return _healthPoints;
@@ -58,25 +73,18 @@ namespace CCC.Attributes
         {
             _healthPoints = (float)state;
 
-            if(_healthPoints == 0)
+            if (_healthPoints == 0)
             {
                 Die();
             }
         }
 
-        public float GetPercentage()
-        {
-            float levelHealthPoints = _baseStats.GetStat(Stat.Health);
-
-            return (_healthPoints / levelHealthPoints) * 100;
-        }
-     
         private void Die()
         {
             if (_isDead) return;
 
             _isDead = true;
-            GetComponent<Animator>().SetTrigger("die");
+            GetComponent<Animator>().SetTrigger(_dieTriggerAnimatorHash);
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 

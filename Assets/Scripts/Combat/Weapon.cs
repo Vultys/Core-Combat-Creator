@@ -47,10 +47,10 @@ namespace CCC.Combat
             }
         }
 
-        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target, GameObject instigator)
+        public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target, GameObject instigator, float calculatedDamage)
         {
             Projectile projectile = Instantiate(_projectile, ChooseHand(rightHand, leftHand).position, Quaternion.identity);
-            projectile.SetTarget(target, instigator, _damage);
+            projectile.SetTarget(target, instigator, calculatedDamage);
         }
 
         private Transform ChooseHand(Transform rightHand, Transform leftHand) => _isRightHanded ? rightHand : leftHand;

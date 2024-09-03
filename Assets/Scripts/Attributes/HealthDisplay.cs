@@ -17,7 +17,7 @@ namespace CCC.Attributes
 
         private void Update()
         {
-            _healthText.text = String.Format("{0:0}%", _health.GetPercentage());
+            _healthText.text = String.Format("{0:0}/{1:0}", _health.HealthPoints, _health.GetMaxHealthPoints());
         }
     }
 }

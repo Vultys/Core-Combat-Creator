@@ -3,6 +3,7 @@ using CCC.Movement;
 using CCC.Saving;
 using CCC.Attributes;
 using UnityEngine;
+using CCC.Stats;
 
 namespace CCC.Combat
 {
@@ -133,13 +134,15 @@ namespace CCC.Combat
         {
             if (_target == null) return;
 
+            float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
+
             if (_currentWeapon.HasProjectile)
             {
-                _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target, gameObject);
+                _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target, gameObject, damage);
             }
             else
             {
-                _target.TakeDamage(gameObject, _currentWeapon.Damage);
+                _target.TakeDamage(gameObject, damage);
             }
         }
 
