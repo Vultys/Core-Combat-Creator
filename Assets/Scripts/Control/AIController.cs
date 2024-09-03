@@ -36,9 +36,13 @@ namespace CCC.Control
 
         private float _timeSinceArrivedAtWaypoint = Mathf.Infinity;
 
-        private void Start()
+        private void Awake()
         {
             _player = GameObject.FindWithTag("Player");
+        }
+
+        private void Start()
+        {
             _guardPosition = transform.position;
         }
 

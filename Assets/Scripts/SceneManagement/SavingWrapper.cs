@@ -55,9 +55,9 @@ namespace CCC.SceneManagement
 
         private IEnumerator LoadLastScene()
         {
+            yield return _savingSystem.LoadLastScene(_defaultSaveFile);
             Fader fader = FindObjectOfType<Fader>();
             fader.FadeOutImmediate();
-            yield return _savingSystem.LoadLastScene(_defaultSaveFile);
             yield return fader.FadeIn(_fadeInTime);
         }
     }

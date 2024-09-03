@@ -20,19 +20,27 @@ namespace CCC.Attributes
         private bool _isDead = false;
         public bool IsDead => _isDead;
 
-        private void Start()
+        private void Awake()
         {
             _baseStats = GetComponent<BaseStats>();
+        }
+
+        private void Start()
+        {
+            if (_healthPoints >= 0f) return;
+
+            _healthPoints = _baseStats.GetStat(Stat.Health);
+        }
+
+        private void OnEnable()
+        {
             if (_baseStats != null)
             {
                 _baseStats.OnLevelUp += RegenerateHealth;
             }
-
-            if (_healthPoints >= 0f) return;
-            _healthPoints = _baseStats.GetStat(Stat.Health);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             if(_baseStats != null)
             {

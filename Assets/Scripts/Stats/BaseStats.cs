@@ -33,16 +33,25 @@ namespace CCC.Stats
         }
 
         public event Action OnLevelUp;
+        
+        private void Awake()
+        {
+            _experience = GetComponent<Experience>();
+        }
 
         private void Start()
         {
-            _experience = GetComponent<Experience>();
+            _currentLevel = CalculateLevel();
+        }
+
+        private void OnEnable()
+        {
             if (_experience == null) return;
 
             _experience.OnGainingPoints += UpdateLevel;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             if (_experience == null) return;
 
@@ -53,11 +62,9 @@ namespace CCC.Stats
 
         private int CalculateLevel()
         {
-            Experience experience = GetComponent<Experience>();
+            if (_experience == null) return _startingLevel;
 
-            if (experience == null) return _startingLevel;
-
-            float currentXP = experience.ExperiencePoints;
+            float currentXP = _experience.ExperiencePoints;
 
             int penultimateLevel = _progression.GetLevels(Stat.ExperienceToLevelUp, CharacterClass.Player);
 
