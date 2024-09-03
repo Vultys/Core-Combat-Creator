@@ -8,6 +8,8 @@ namespace CCC.Stats
         [Range(0, 99)]
         [SerializeField] private int _startingLevel = 1;
 
+        [SerializeField] private bool _shouldUseModifiers = false;
+
         [SerializeField] private CharacterClass _characterClass = CharacterClass.None;
 
         [SerializeField] private Progression _progression = null;
@@ -47,7 +49,7 @@ namespace CCC.Stats
             _experience.OnGainingPoints -= UpdateLevel;
         }
 
-        public float GetStat(Stat stat) => _progression.GetStat(stat, _characterClass, CurrentLevel) + GetAdditiveModifier(stat);
+        public float GetStat(Stat stat) => (GetBaseStat(stat) + GetAdditiveModifier(stat)) * (1 + GetPercentageModifier(stat) / 100);
 
         private int CalculateLevel()
         {
@@ -83,18 +85,36 @@ namespace CCC.Stats
             }
         }
 
-        private void LevelUpEffect()
-        {
-            Instantiate(_levelUpParticleEffect, transform);
-        }
+        private void LevelUpEffect() => Instantiate(_levelUpParticleEffect, transform);
 
         private float GetAdditiveModifier(Stat stat)
         {
+            if(!_shouldUseModifiers) return 0f;
+
             float result = 0f;
 
             foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
             {
-                foreach(float modifier in provider.GetAdditiveModifier(stat))
+                foreach(float modifier in provider.GetAdditiveModifiers(stat))
+                {
+                    result += modifier;
+                }
+            }
+
+            return result;
+        }
+
+        private float GetBaseStat(Stat stat) => _progression.GetStat(stat, _characterClass, CurrentLevel);
+
+        private float GetPercentageModifier(Stat stat)
+        {
+            if (!_shouldUseModifiers) return 0f;
+
+            float result = 0f;
+
+            foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
+            {
+                foreach (float modifier in provider.GetPercentageModifiers(stat))
                 {
                     result += modifier;
                 }

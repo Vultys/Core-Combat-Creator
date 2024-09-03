@@ -130,6 +130,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 355372143129586795, guid: 70f9053fad93d4c4487658cde04ff093,
         type: 3}
+    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: _shouldUseModifiers
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5844795661910770845, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
       propertyPath: _weaponPrefab

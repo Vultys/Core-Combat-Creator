@@ -105,11 +105,19 @@ namespace CCC.Combat
             EquipWeapon(Resources.Load<Weapon>(weaponName));
         }
 
-        public IEnumerable<float> GetAdditiveModifier(Stat stat)
+        public IEnumerable<float> GetAdditiveModifiers(Stat stat)
         {
             if(stat == Stat.Damage)
             {
                 yield return _currentWeapon.Damage;
+            }
+        }
+
+        public IEnumerable<float> GetPercentageModifiers(Stat stat)
+        {
+            if (stat == Stat.Damage)
+            {
+                yield return _currentWeapon.PercentageBonus;
             }
         }
 

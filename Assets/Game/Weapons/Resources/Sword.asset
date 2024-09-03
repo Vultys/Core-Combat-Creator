@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _range: 2
   _damage: 10
+  _percentageBonus: 10
   _isRightHanded: 1
   _equippedPrefab: {fileID: 423017602232572418, guid: 93f7ef21305e62448ac159f29af1e830,
     type: 3}
