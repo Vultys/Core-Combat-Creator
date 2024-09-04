@@ -3,6 +3,7 @@ using CCC.Movement;
 using CCC.Combat;
 using CCC.Attributes;
 using System;
+using UnityEngine.EventSystems;
 
 namespace CCC.Control 
 {
@@ -12,7 +13,8 @@ namespace CCC.Control
         {
             None,
             Movement,
-            Combat
+            Combat,
+            UI
         }
 
         [Serializable]
@@ -34,20 +36,20 @@ namespace CCC.Control
 
         private void Update()
         {
-            if(_health.IsDead)
+            if (InteractWithUI())
             {
+                SetCursor(CursorType.UI);
                 return;
             }
 
-            if(InteractWithCombat())
+            if (_health.IsDead)
             {
+                SetCursor(CursorType.None);
                 return;
             }
 
-            if(InteractWithMovement())
-            {
-                return;
-            }
+            if (InteractWithCombat()) return;
+            if (InteractWithMovement()) return;
 
             SetCursor(CursorType.None);
         }
@@ -113,6 +115,11 @@ namespace CCC.Control
             }
 
             return _cursorMappings[0];
+        }
+
+        private bool InteractWithUI()
+        {
+            return EventSystem.current.IsPointerOverGameObject();
         }
     }
 }
