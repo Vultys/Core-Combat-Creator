@@ -31,6 +31,11 @@ namespace CCC.Combat
             return true;
         }
 
+        public CursorType GetCursorType()
+        {
+            return CursorType.Pickable;
+        }
+
         private IEnumerator HideForSeconds(float seconds)
         {
             ShowPickup(false);

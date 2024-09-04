@@ -55,6 +55,9 @@ MonoBehaviour:
   - type: 3
     texture: {fileID: 2800000, guid: e4fac5245b727db42ba0ca0258851b83, type: 3}
     hotspot: {x: 0, y: 0}
+  - type: 4
+    texture: {fileID: 2800000, guid: f8c873f1e53e83f4aabf342d6be1dfc3, type: 3}
+    hotspot: {x: 0, y: 0}
 --- !u!1001 &278764466368306622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62,6 +65,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7260162083717314153, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7260162083717314153, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1450614300165930976, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -117,15 +130,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7260162083717314153, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+    - target: {fileID: 656400046078724909, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
-      propertyPath: m_Name
-      value: Player
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7260162083717314153, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
-      propertyPath: m_TagString
-      value: Player
+      propertyPath: _characterClass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: _levelUpParticleEffect
+      value: 
+      objectReference: {fileID: 355372143129586795, guid: 70f9053fad93d4c4487658cde04ff093,
+        type: 3}
+    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: _shouldUseModifiers
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5844795661910770845, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
@@ -170,27 +194,6 @@ PrefabInstance:
         type: 3}
       propertyPath: _healthPoints
       value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
-        type: 3}
-      propertyPath: _characterClass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
-        type: 3}
-      propertyPath: _levelUpParticleEffect
-      value: 
-      objectReference: {fileID: 355372143129586795, guid: 70f9053fad93d4c4487658cde04ff093,
-        type: 3}
-    - target: {fileID: 7434373767788508729, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
-        type: 3}
-      propertyPath: _shouldUseModifiers
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 656400046078724909, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6863355709104839218, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}

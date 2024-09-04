@@ -9,13 +9,6 @@ namespace CCC.Control
 {
     public class PlayerController : MonoBehaviour
     {
-        enum CursorType
-        {
-            None,
-            Movement,
-            Combat,
-            UI
-        }
 
         [Serializable]
         struct CursorMapping
@@ -111,7 +104,7 @@ namespace CCC.Control
                 {
                     if(raycastable.HandleRaycast(this))
                     {
-                        SetCursor(CursorType.Combat);
+                        SetCursor(raycastable.GetCursorType());
                         return true;
                     }
                 }
