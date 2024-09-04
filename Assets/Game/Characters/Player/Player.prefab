@@ -39,8 +39,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2f11595fc2b2f4c92b7454621acfc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxNavMeshProjectionDistance: 1
+  _maxNavPathLength: 40
   _mover: {fileID: 8341434295834665025}
-  _fighter: {fileID: 5963535985098479907}
   _health: {fileID: 6312583234197211675}
   _cursorMappings:
   - type: 0
@@ -200,6 +201,16 @@ PrefabInstance:
       propertyPath: uniqueIdentifier
       value: player
       objectReference: {fileID: 0}
+    - target: {fileID: 5723264143521249772, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654198012100618108, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf, type: 3}
 --- !u!1 &7430684559824956375 stripped
@@ -224,18 +235,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67b0e8d68ea611f408f6ae666c9e3da2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5963535985098479907 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5844795661910770845, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
-    type: 3}
-  m_PrefabInstance: {fileID: 278764466368306622}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7430684559824956375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7103d6ab15be425408c73c3e57078287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6312583234197211675 stripped
