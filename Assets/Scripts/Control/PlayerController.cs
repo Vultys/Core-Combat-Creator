@@ -77,9 +77,9 @@ namespace CCC.Control
 
         private CursorMapping GetCursorMapping(CursorType cursorType)
         {
-            foreach(var mapping in _cursorMappings)
+            foreach (var mapping in _cursorMappings)
             {
-                if(mapping.type == cursorType)
+                if (mapping.type == cursorType)
                 {
                     return mapping;
                 }
@@ -95,14 +95,14 @@ namespace CCC.Control
 
         private bool InteractWithComponent()
         {
-            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            RaycastHit[] hits = RaycastAllSorted();
 
-            foreach(RaycastHit hit in hits)
+            foreach (RaycastHit hit in hits)
             {
                 var raycastables = hit.transform.GetComponents<IRaycastable>();
-                foreach(var raycastable in raycastables)
+                foreach (var raycastable in raycastables)
                 {
-                    if(raycastable.HandleRaycast(this))
+                    if (raycastable.HandleRaycast(this))
                     {
                         SetCursor(raycastable.GetCursorType());
                         return true;
@@ -111,6 +111,19 @@ namespace CCC.Control
             }
 
             return false;
+        }
+
+        private RaycastHit[] RaycastAllSorted()
+        {
+            var hits = Physics.RaycastAll(GetMouseRay());
+
+            float[] distances = new float[hits.Length];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                distances[i] = hits[i].distance;
+            }
+            Array.Sort(distances, hits);
+            return hits;
         }
     }
 }
