@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CCC.Control;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace CCC.Combat
 {
-    public class WeaponPickup : MonoBehaviour
+    public class WeaponPickup : MonoBehaviour, IRaycastable
     {
         [SerializeField] private float _respawnTime = 5f;
 
@@ -16,9 +17,18 @@ namespace CCC.Combat
         {
             if(other.CompareTag("Player"))
             {
-                other.GetComponent<Fighter>().EquipWeapon(_weapon);
-                StartCoroutine(HideForSeconds(_respawnTime));
+                Pickup(other.GetComponent<Fighter>());
             }
+        }
+
+        public bool HandleRaycast(PlayerController callingController)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                Pickup(callingController.GetComponent<Fighter>());
+            }
+
+            return true;
         }
 
         private IEnumerator HideForSeconds(float seconds)
@@ -35,6 +45,12 @@ namespace CCC.Combat
             {
                 child.gameObject.SetActive(shouldShow);
             }
+        }
+
+        private void Pickup(Fighter fighter)
+        {
+            fighter.EquipWeapon(_weapon);
+            StartCoroutine(HideForSeconds(_respawnTime));
         }
     }
 }

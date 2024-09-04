@@ -48,32 +48,10 @@ namespace CCC.Control
                 return;
             }
 
-            if (InteractWithCombat()) return;
+            if (InteractWithComponent()) return;
             if (InteractWithMovement()) return;
 
             SetCursor(CursorType.None);
-        }
-
-        private bool InteractWithCombat()
-        {
-            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
-            foreach (RaycastHit hit in hits)
-            {
-                CombatTarget target = hit.collider.GetComponent<CombatTarget>();
-
-                if (!_fighter.CanAttack(target?.gameObject))
-                {
-                    continue;
-                }
-
-                if (Input.GetMouseButton(0))
-                {
-                    _fighter.Attack(target.gameObject);
-                }
-                SetCursor(CursorType.Combat);
-                return true;
-            }
-            return false;
         }
 
         private bool InteractWithMovement()
@@ -120,6 +98,26 @@ namespace CCC.Control
         private bool InteractWithUI()
         {
             return EventSystem.current.IsPointerOverGameObject();
+        }
+
+        private bool InteractWithComponent()
+        {
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+
+            foreach(RaycastHit hit in hits)
+            {
+                var raycastables = hit.transform.GetComponents<IRaycastable>();
+                foreach(var raycastable in raycastables)
+                {
+                    if(raycastable.HandleRaycast(this))
+                    {
+                        SetCursor(CursorType.Combat);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
