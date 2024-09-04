@@ -2,15 +2,35 @@
 using CCC.Movement;
 using CCC.Combat;
 using CCC.Attributes;
+using System;
 
 namespace CCC.Control 
 {
     public class PlayerController : MonoBehaviour
     {
+        enum CursorType
+        {
+            None,
+            Movement,
+            Combat
+        }
+
+        [Serializable]
+        struct CursorMapping
+        {
+            public CursorType type;
+
+            public Texture2D texture;
+
+            public Vector2 hotspot;
+        }
+
         [Header("Components")]
         [SerializeField] private Mover _mover;
         [SerializeField] private Fighter _fighter;
         [SerializeField] private Health _health;
+        [SerializeField] private CursorMapping[] _cursorMappings = null;
+
 
         private void Update()
         {
@@ -28,6 +48,8 @@ namespace CCC.Control
             {
                 return;
             }
+
+            SetCursor(CursorType.None);
         }
 
         private bool InteractWithCombat()
@@ -46,6 +68,7 @@ namespace CCC.Control
                 {
                     _fighter.Attack(target.gameObject);
                 }
+                SetCursor(CursorType.Combat);
                 return true;
             }
             return false;
@@ -62,6 +85,7 @@ namespace CCC.Control
                 {
                     _mover.StartMoveAction(hit.point, 1f);
                 }
+                SetCursor(CursorType.Movement);
                 return true;
             }
             return false;
@@ -70,6 +94,25 @@ namespace CCC.Control
         private static Ray GetMouseRay()
         {
             return Camera.main.ScreenPointToRay(Input.mousePosition);
+        }
+
+        private void SetCursor(CursorType type)
+        {
+            CursorMapping mapping = GetCursorMapping(type);
+            Cursor.SetCursor(mapping.texture, mapping.hotspot, CursorMode.Auto);
+        }
+
+        private CursorMapping GetCursorMapping(CursorType cursorType)
+        {
+            foreach(var mapping in _cursorMappings)
+            {
+                if(mapping.type == cursorType)
+                {
+                    return mapping;
+                }
+            }
+
+            return _cursorMappings[0];
         }
     }
 }
