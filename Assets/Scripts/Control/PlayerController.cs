@@ -4,8 +4,9 @@ using CCC.Combat;
 using CCC.Attributes;
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.AI;
 
-namespace CCC.Control 
+namespace CCC.Control
 {
     public class PlayerController : MonoBehaviour
     {
@@ -22,9 +23,9 @@ namespace CCC.Control
 
         [Header("Components")]
         [SerializeField] private Mover _mover;
-        [SerializeField] private Fighter _fighter;
         [SerializeField] private Health _health;
         [SerializeField] private CursorMapping[] _cursorMappings = null;
+        [SerializeField] private float _maxNavMeshProjectionDistance = 1f;
 
 
         private void Update()
@@ -49,14 +50,13 @@ namespace CCC.Control
 
         private bool InteractWithMovement()
         {
-            RaycastHit hit;
+            Vector3 target;
 
-            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
-            if (hasHit)
+            if (RaycastNavMesh(out target))
             {
                 if (Input.GetMouseButton(0))
                 {
-                    _mover.StartMoveAction(hit.point, 1f);
+                    _mover.StartMoveAction(target, 1f);
                 }
                 SetCursor(CursorType.Movement);
                 return true;
@@ -125,6 +125,24 @@ namespace CCC.Control
             Array.Sort(distances, hits);
             return hits;
         }
-    }
+
+        private bool RaycastNavMesh(out Vector3 target)
+        {
+            target = new Vector3();
+            RaycastHit hit;
+
+            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
+
+            if (!hasHit) return false;
+
+            NavMeshHit navMeshHit;
+            bool hasCastToNavMesh = NavMesh.SamplePosition(hit.point, out navMeshHit, _maxNavMeshProjectionDistance, NavMesh.AllAreas);
+
+            if (!hasCastToNavMesh) return false;
+
+            target = navMeshHit.position;
+            return true;
+        }
+    } 
 }
 
