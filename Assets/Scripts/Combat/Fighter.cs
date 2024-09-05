@@ -29,9 +29,11 @@ namespace CCC.Combat
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
         
-        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon.value.Range;
+        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeaponConfig.Range;
 
-        private LazyValue<WeaponConfig> _currentWeapon = null;
+        private WeaponConfig _currentWeaponConfig = null;
+
+        private LazyValue<Weapon> _currentWeapon = null;
 
         private Health _target;
 
@@ -39,7 +41,8 @@ namespace CCC.Combat
 
         private void Awake()
         {
-            _currentWeapon = new LazyValue<WeaponConfig>(SetDefaultWeapon);
+            _currentWeaponConfig = _defaultWeapon;
+            _currentWeapon = new LazyValue<Weapon>(SetupDefaultWeapon);
         }
 
         private void Start()
@@ -86,8 +89,8 @@ namespace CCC.Combat
 
         public void EquipWeapon(WeaponConfig weapon)
         {
-            _currentWeapon.value = weapon;
-            AttachWeapon(weapon);
+            _currentWeaponConfig = weapon;
+            _currentWeapon.value = AttachWeapon(weapon);
         }
 
         public void Cancel()
@@ -99,7 +102,7 @@ namespace CCC.Combat
 
         public object CaptureState()
         {
-            return _currentWeapon.value.name;
+            return _currentWeaponConfig.name;
         }
 
         public void RestoreState(object state)
@@ -112,7 +115,7 @@ namespace CCC.Combat
         {
             if(stat == Stat.Damage)
             {
-                yield return _currentWeapon.value.Damage;
+                yield return _currentWeaponConfig.Damage;
             }
         }
 
@@ -120,7 +123,7 @@ namespace CCC.Combat
         {
             if (stat == Stat.Damage)
             {
-                yield return _currentWeapon.value.PercentageBonus;
+                yield return _currentWeaponConfig.PercentageBonus;
             }
         }
 
@@ -147,13 +150,10 @@ namespace CCC.Combat
             _animator.ResetTrigger(_stopAttackTriggerHash);
         }
 
-        private void AttachWeapon(WeaponConfig weapon) => weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
+        private Weapon AttachWeapon(WeaponConfig weapon) => weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
 
-        private WeaponConfig SetDefaultWeapon()
-        { 
-            AttachWeapon(_defaultWeapon);
-            return _defaultWeapon;
-        }
+        private Weapon SetupDefaultWeapon() => AttachWeapon(_defaultWeapon);
+
         /// <summary>
         /// Animation event
         /// </summary>
@@ -163,9 +163,14 @@ namespace CCC.Combat
 
             float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
 
-            if (_currentWeapon.value.HasProjectile)
+            if(_currentWeapon.value != null)
             {
-                _currentWeapon.value.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target, gameObject, damage);
+                _currentWeapon.value.OnHit();
+            }
+
+            if (_currentWeaponConfig.HasProjectile)
+            {
+                _currentWeaponConfig.LaunchProjectile(_rightHandTransform, _leftHandTransform, _target, gameObject, damage);
             }
             else
             {

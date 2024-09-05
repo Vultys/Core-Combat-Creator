@@ -27,14 +27,15 @@ namespace CCC.Combat
 
         public bool HasProjectile => _projectile != null;
 
-        public void Spawn(Transform rightHand, Transform leftHand, Animator animator)
+        public Weapon Spawn(Transform rightHand, Transform leftHand, Animator animator)
         {
             DestroyOldWeapon(rightHand, leftHand);
+            Weapon weapon = null;
 
             if (_equippedPrefab != null)
             {
                 Transform hand = _isRightHanded ? rightHand : leftHand;
-                Weapon weapon = Instantiate(_equippedPrefab, hand);
+                weapon = Instantiate(_equippedPrefab, hand);
                 weapon.gameObject.name = _name;
             }
 
@@ -48,6 +49,8 @@ namespace CCC.Combat
             {
                 animator.runtimeAnimatorController = aoc.runtimeAnimatorController;
             }
+
+            return weapon;
         }
 
         public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target, GameObject instigator, float calculatedDamage)
