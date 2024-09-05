@@ -114,6 +114,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6456755469047248978, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8078583079559380479, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
         type: 3}
       propertyPath: _maxSpeed
@@ -160,11 +165,6 @@ PrefabInstance:
         type: 3}
       propertyPath: _healthPoints
       value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 6456755469047248978, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2436375706527155690, guid: 2f21dd5a7c71c494bb3a3c5205bfbeaf, type: 3}
@@ -293,6 +293,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2758468064541434812}
     m_Modifications:
+    - target: {fileID: 961191531137173079, guid: 8795f6647dea1d34b822359196cc5cb9,
+        type: 3}
+      propertyPath: _health
+      value: 
+      objectReference: {fileID: 7362543012048964601}
     - target: {fileID: 4421817904467716512, guid: 8795f6647dea1d34b822359196cc5cb9,
         type: 3}
       propertyPath: m_Name

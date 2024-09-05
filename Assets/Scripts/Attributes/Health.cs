@@ -71,15 +71,17 @@ namespace CCC.Attributes
             {
                 _takeDamage?.Invoke(damage);
             }
-        }  
+        }
 
-        public float GetPercentage()
+        public float GetPercentage() => GetFraction() * 100;
+
+        public float GetFraction()
         {
             float levelHealthPoints = GetMaxHealthPoints();
 
-            return (_healthPoints.value / levelHealthPoints) * 100;
+            return (_healthPoints.value / levelHealthPoints);
         }
-        
+
         public float GetMaxHealthPoints()
         {
             return _baseStats.GetStat(Stat.Health);
