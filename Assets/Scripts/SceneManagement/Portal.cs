@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CCC.Control;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -52,12 +53,20 @@ namespace CCC.SceneManagement
 
             Fader fader = FindObjectOfType<Fader>();
             SavingWrapper saving = FindObjectOfType<SavingWrapper>(); 
-            
+            var player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+
+            player.enabled = false;
+
+
             yield return fader.FadeOut(_fadeOutDuration);
 
             saving.Save();
 
             yield return SceneManager.LoadSceneAsync(_sceneToLoad);
+
+            var newPlayer = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            newPlayer.enabled = false;
+
 
             saving.Load();
 
@@ -67,7 +76,9 @@ namespace CCC.SceneManagement
             saving.Save();
             
             yield return new WaitForSeconds(_fadeWaitDuration);
-            yield return fader.FadeIn(_fadeInDuration);
+            fader.FadeIn(_fadeInDuration);
+
+            newPlayer.enabled = true;
 
             Destroy(gameObject);
         }

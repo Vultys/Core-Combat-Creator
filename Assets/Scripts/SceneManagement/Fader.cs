@@ -14,17 +14,17 @@ namespace CCC.SceneManagement
             _canvasGroup.alpha = 1f;
         }
 
-        public IEnumerator FadeOut(float time)
+        public Coroutine FadeOut(float time)
         {
             return Fade(1f, time);
         }
 
-        public IEnumerator FadeIn(float time)
+        public Coroutine FadeIn(float time)
         {
             return Fade(0f, time);
         }
 
-        public IEnumerator Fade(float target, float time)
+        public Coroutine Fade(float target, float time)
         {
             if(_currentActiveFade != null)
             {
@@ -32,14 +32,14 @@ namespace CCC.SceneManagement
             }
 
            _currentActiveFade =  StartCoroutine(FadeRoutine(target, time));
-            yield return _currentActiveFade;
+            return _currentActiveFade;
         }
 
         private IEnumerator FadeRoutine(float target, float time)
         {
             while (!Mathf.Approximately(_canvasGroup.alpha, target))
             {
-                _canvasGroup.alpha += Mathf.MoveTowards(_canvasGroup.alpha, target, Time.deltaTime / time);
+                _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, target, Time.deltaTime / time);
                 yield return null;
             }
         }
