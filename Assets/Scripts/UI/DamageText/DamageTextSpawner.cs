@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CCC.UI.DamageText
 {
@@ -10,6 +9,7 @@ namespace CCC.UI.DamageText
         public void Spawn(float damage)
         {
             var instance = Instantiate<DamageText>(_damageTextPrefab, transform);
+            instance.SetValue(damage);
         }
     }
 }
