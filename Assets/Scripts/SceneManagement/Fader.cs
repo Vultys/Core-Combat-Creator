@@ -6,6 +6,8 @@ namespace CCC.SceneManagement
     public class Fader : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _canvasGroup;
+
+        private Coroutine _currentActiveFade;
         
         public void FadeOutImmediate()
         {
@@ -14,19 +16,30 @@ namespace CCC.SceneManagement
 
         public IEnumerator FadeOut(float time)
         {
-            while (_canvasGroup.alpha < 1)
-            {
-                _canvasGroup.alpha += Time.deltaTime / time; 
-                yield return null;
-
-            }
+            return Fade(1f, time);
         }
 
         public IEnumerator FadeIn(float time)
         {
-            while (_canvasGroup.alpha > 0)
+            return Fade(0f, time);
+        }
+
+        public IEnumerator Fade(float target, float time)
+        {
+            if(_currentActiveFade != null)
             {
-                _canvasGroup.alpha -= Time.deltaTime / time; 
+                StopCoroutine(_currentActiveFade);
+            }
+
+           _currentActiveFade =  StartCoroutine(FadeRoutine(target, time));
+            yield return _currentActiveFade;
+        }
+
+        private IEnumerator FadeRoutine(float target, float time)
+        {
+            while (!Mathf.Approximately(_canvasGroup.alpha, target))
+            {
+                _canvasGroup.alpha += Mathf.MoveTowards(_canvasGroup.alpha, target, Time.deltaTime / time);
                 yield return null;
             }
         }
