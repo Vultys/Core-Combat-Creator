@@ -18,7 +18,7 @@ namespace CCC.Combat
 
         [SerializeField] private GameObject[] _destroyOnHit = null;
 
-        [SerializeField] private UnityEvent _hitEvent = null;
+        [SerializeField] private UnityEvent _onHit = null;
 
         private Health _target = null;
 
@@ -79,7 +79,7 @@ namespace CCC.Combat
 
             _speed = 0f;
             
-            _hitEvent?.Invoke();
+            _onHit?.Invoke();
 
             if (_hitEffect != null)
             {

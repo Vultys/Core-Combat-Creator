@@ -9,7 +9,7 @@ namespace CCC.Combat
     {
         [SerializeField] private float _respawnTime = 5f;
 
-        [SerializeField] private Weapon _weapon;
+        [SerializeField] private WeaponConfig _weapon;
 
         [SerializeField] private SphereCollider _coliider;
 

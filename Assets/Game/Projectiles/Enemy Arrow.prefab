@@ -10,7 +10,22 @@ PrefabInstance:
     - target: {fileID: 3699214351459427540, guid: e933aa298506ac0468da6994ea5277df,
         type: 3}
       propertyPath: m_Name
-      value: EnemyArrow
+      value: Enemy Arrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817545523642135630, guid: e933aa298506ac0468da6994ea5277df,
+        type: 3}
+      propertyPath: _onHit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817545523642135630, guid: e933aa298506ac0468da6994ea5277df,
+        type: 3}
+      propertyPath: _onHit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817545523642135630, guid: e933aa298506ac0468da6994ea5277df,
+        type: 3}
+      propertyPath: _onHit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1659690379393228475, guid: e933aa298506ac0468da6994ea5277df,
         type: 3}

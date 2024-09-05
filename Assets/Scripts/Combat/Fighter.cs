@@ -21,7 +21,7 @@ namespace CCC.Combat
         [SerializeField] private Animator _animator;
         [SerializeField] private Transform _rightHandTransform = null;
         [SerializeField] private Transform _leftHandTransform = null;
-        [SerializeField] private Weapon _defaultWeapon = null;
+        [SerializeField] private WeaponConfig _defaultWeapon = null;
 
         private float _timeSinceLastAttack = Mathf.Infinity;
 
@@ -31,7 +31,7 @@ namespace CCC.Combat
         
         private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeapon.value.Range;
 
-        private LazyValue<Weapon> _currentWeapon = null;
+        private LazyValue<WeaponConfig> _currentWeapon = null;
 
         private Health _target;
 
@@ -39,7 +39,7 @@ namespace CCC.Combat
 
         private void Awake()
         {
-            _currentWeapon = new LazyValue<Weapon>(SetDefaultWeapon);
+            _currentWeapon = new LazyValue<WeaponConfig>(SetDefaultWeapon);
         }
 
         private void Start()
@@ -84,7 +84,7 @@ namespace CCC.Combat
             return targetToTest != null && !targetToTest.IsDead;
         }
 
-        public void EquipWeapon(Weapon weapon)
+        public void EquipWeapon(WeaponConfig weapon)
         {
             _currentWeapon.value = weapon;
             AttachWeapon(weapon);
@@ -105,7 +105,7 @@ namespace CCC.Combat
         public void RestoreState(object state)
         {
             string weaponName = (string) state;
-            EquipWeapon(Resources.Load<Weapon>(weaponName));
+            EquipWeapon(Resources.Load<WeaponConfig>(weaponName));
         }
 
         public IEnumerable<float> GetAdditiveModifiers(Stat stat)
@@ -147,9 +147,9 @@ namespace CCC.Combat
             _animator.ResetTrigger(_stopAttackTriggerHash);
         }
 
-        private void AttachWeapon(Weapon weapon) => weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
+        private void AttachWeapon(WeaponConfig weapon) => weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
 
-        private Weapon SetDefaultWeapon()
+        private WeaponConfig SetDefaultWeapon()
         { 
             AttachWeapon(_defaultWeapon);
             return _defaultWeapon;

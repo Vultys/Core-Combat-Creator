@@ -55,7 +55,7 @@ MonoBehaviour:
     type: 3}
   _destroyOnHit:
   - {fileID: 3210308604303132127}
-  _hitEvent:
+  _onHit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1576301990682037371}
