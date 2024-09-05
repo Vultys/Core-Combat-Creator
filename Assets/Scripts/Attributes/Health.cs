@@ -20,6 +20,8 @@ namespace CCC.Attributes
 
         [SerializeField] private TakeDamageEvent _takeDamage;
 
+        [SerializeField] private UnityEvent _onDie;
+
         private int _dieTriggerAnimatorHash = Animator.StringToHash("die");
 
         private BaseStats _baseStats = null;
@@ -64,8 +66,9 @@ namespace CCC.Attributes
             
             if (_healthPoints.value == 0)
             {
+                _onDie?.Invoke();
+                Die(); 
                 AwardExperience(instigator);
-                Die();
             }
             else
             {

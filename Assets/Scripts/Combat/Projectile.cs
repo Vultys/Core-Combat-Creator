@@ -1,5 +1,6 @@
 ﻿using CCC.Attributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CCC.Combat
 {
@@ -16,6 +17,8 @@ namespace CCC.Combat
         [SerializeField] private GameObject _hitEffect = null;
 
         [SerializeField] private GameObject[] _destroyOnHit = null;
+
+        [SerializeField] private UnityEvent _hitEvent = null;
 
         private Health _target = null;
 
@@ -75,6 +78,8 @@ namespace CCC.Combat
             _target.TakeDamage(_instigator, _damage);
 
             _speed = 0f;
+            
+            _hitEvent?.Invoke();
 
             if (_hitEffect != null)
             {
