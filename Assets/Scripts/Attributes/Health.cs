@@ -2,6 +2,7 @@ using CCC.Core;
 using CCC.Saving;
 using CCC.Stats;
 using GameDevTV.Utils;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,9 +10,15 @@ namespace CCC.Attributes
 {
     public class Health : MonoBehaviour, ISaveable
     {
+        [Serializable]
+        public class TakeDamageEvent : UnityEvent<float>
+        {
+
+        }
+
         [SerializeField] private float regeneratePercentage = 70f;
 
-        [SerializeField] private UnityEvent _takeDamage;
+        [SerializeField] private TakeDamageEvent _takeDamage;
 
         private int _dieTriggerAnimatorHash = Animator.StringToHash("die");
 
@@ -62,7 +69,7 @@ namespace CCC.Attributes
             }
             else
             {
-                _takeDamage?.Invoke();
+                _takeDamage?.Invoke(damage);
             }
         }  
 
