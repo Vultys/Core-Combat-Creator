@@ -198,6 +198,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   regeneratePercentage: 70
+  _takeDamage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3047104846596534552}
+        m_MethodName: Spawn
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &6863355709104839218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +264,7 @@ PrefabInstance:
     - target: {fileID: 949812386813385187, guid: d51d5ccb1c360ec4eb16473cc0a1f8b2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 949812386813385187, guid: d51d5ccb1c360ec4eb16473cc0a1f8b2,
         type: 3}
@@ -303,3 +319,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6103901102948229553}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3047104846596534552 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9150210533941170345, guid: d51d5ccb1c360ec4eb16473cc0a1f8b2,
+    type: 3}
+  m_PrefabInstance: {fileID: 6103901102948229553}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6389eff0c3d205d48b8b1f4e75473cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

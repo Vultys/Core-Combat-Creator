@@ -3,12 +3,15 @@ using CCC.Saving;
 using CCC.Stats;
 using GameDevTV.Utils;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CCC.Attributes
 {
     public class Health : MonoBehaviour, ISaveable
     {
         [SerializeField] private float regeneratePercentage = 70f;
+
+        [SerializeField] private UnityEvent _takeDamage;
 
         private int _dieTriggerAnimatorHash = Animator.StringToHash("die");
 
@@ -50,13 +53,16 @@ namespace CCC.Attributes
 
         public void TakeDamage(GameObject instigator, float damage)
         {
-            print(gameObject.name + " took damage: " + damage);
-
-            _healthPoints.value = Mathf.Max(_healthPoints.value - damage, 0);
-            if(_healthPoints.value == 0)
+            _healthPoints.value = Mathf.Max(_healthPoints.value - damage, 0); 
+            
+            if (_healthPoints.value == 0)
             {
                 AwardExperience(instigator);
                 Die();
+            }
+            else
+            {
+                _takeDamage?.Invoke();
             }
         }  
 
