@@ -16,6 +16,7 @@ MonoBehaviour:
   _damage: 0
   _percentageBonus: 0
   _isRightHanded: 1
-  _equippedPrefab: {fileID: 0}
+  _equippedPrefab: {fileID: 2937157349281754819, guid: c013721f4e25da84a9dcfb21e3cf6bcd,
+    type: 3}
   _animatorOverride: {fileID: 0}
   _projectile: {fileID: 0}
