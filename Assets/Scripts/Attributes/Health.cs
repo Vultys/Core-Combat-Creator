@@ -75,25 +75,15 @@ namespace CCC.Attributes
                 _takeDamage?.Invoke(damage);
             }
         }
+        public float GetFraction() => _healthPoints.value / GetMaxHealthPoints();
 
         public float GetPercentage() => GetFraction() * 100;
 
-        public float GetFraction()
-        {
-            float levelHealthPoints = GetMaxHealthPoints();
+        public float GetMaxHealthPoints() => _baseStats.GetStat(Stat.Health);
 
-            return (_healthPoints.value / levelHealthPoints);
-        }
+        public void Heal(float healthToRestore) => _healthPoints.value = Mathf.Min(GetMaxHealthPoints(), _healthPoints.value + healthToRestore);
 
-        public float GetMaxHealthPoints()
-        {
-            return _baseStats.GetStat(Stat.Health);
-        }
-
-        public object CaptureState()
-        {
-            return _healthPoints.value;
-        }
+        public object CaptureState() => _healthPoints.value;
 
         public void RestoreState(object state)
         {

@@ -1,4 +1,5 @@
-﻿using CCC.Control;
+﻿using CCC.Attributes;
+using CCC.Control;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace CCC.Combat
     {
         [SerializeField] private float _respawnTime = 5f;
 
+        [SerializeField] private float _healthToRestore = 0f;
+
         [SerializeField] private WeaponConfig _weapon;
 
         [SerializeField] private SphereCollider _coliider;
@@ -17,7 +20,7 @@ namespace CCC.Combat
         {
             if(other.CompareTag("Player"))
             {
-                Pickup(other.GetComponent<Fighter>());
+                Pickup(other.gameObject);
             }
         }
 
@@ -25,7 +28,7 @@ namespace CCC.Combat
         {
             if(Input.GetMouseButtonDown(0))
             {
-                Pickup(callingController.GetComponent<Fighter>());
+                Pickup(callingController.gameObject);
             }
 
             return true;
@@ -52,9 +55,17 @@ namespace CCC.Combat
             }
         }
 
-        private void Pickup(Fighter fighter)
+        private void Pickup(GameObject subject)
         {
-            fighter.EquipWeapon(_weapon);
+            if (_weapon != null)
+            {
+                subject.GetComponent<Fighter>().EquipWeapon(_weapon);
+            }
+            if (_healthToRestore > 0)
+            {
+                subject.GetComponent<Health>().Heal(_healthToRestore);
+            }
+
             StartCoroutine(HideForSeconds(_respawnTime));
         }
     }
