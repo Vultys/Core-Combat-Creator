@@ -83,6 +83,8 @@ namespace CCC.Combat
                 return false;
             }
 
+            if (!GetComponent<Mover>().CanMoveTo(combatTarget.transform.position)) return false;
+
             Health targetToTest = combatTarget.GetComponent<Health>();
             return targetToTest != null && !targetToTest.IsDead;
         }

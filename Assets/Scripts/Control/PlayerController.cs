@@ -23,8 +23,6 @@ namespace CCC.Control
 
         [Header("Settings")]
         [SerializeField] private float _maxNavMeshProjectionDistance = 1f;
-        [SerializeField] private float _maxNavPathLength = 40f;
-
 
 
         [Header("Components")]
@@ -58,6 +56,8 @@ namespace CCC.Control
 
             if (RaycastNavMesh(out target))
             {
+                if(!GetComponent<Mover>().CanMoveTo(target)) return false;
+
                 if (Input.GetMouseButton(0))
                 {
                     _mover.StartMoveAction(target, 1f);
@@ -146,31 +146,7 @@ namespace CCC.Control
             
             target = navMeshHit.position;
 
-            NavMeshPath path = new NavMeshPath();
-
-            bool hasPath = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path);
-
-            if (!hasPath) return false;
-
-            if(path.status != NavMeshPathStatus.PathComplete) return false;
-
-            if(GetPathLength(path) > _maxNavPathLength) return false;
-
             return true;
-        }
-
-        private float GetPathLength(NavMeshPath path)
-        {
-            float totalDistance = 0f;
-
-            if (path.corners.Length < 2) return totalDistance;
-
-            for (int i = 0; i < path.corners.Length - 1; i++)
-            {
-                totalDistance += Vector3.Distance(path.corners[i], path.corners[i + 1]);
-            }
-
-            return totalDistance;
         }
     } 
 }
