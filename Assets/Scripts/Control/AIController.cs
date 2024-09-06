@@ -3,6 +3,7 @@ using CCC.Combat;
 using CCC.Core;
 using CCC.Movement;
 using GameDevTV.Utils;
+using System;
 using UnityEngine;
 
 namespace CCC.Control
@@ -15,6 +16,7 @@ namespace CCC.Control
         [SerializeField] private float _agroCullDownTime = 5f;
         [SerializeField] private float _waypointTolerance = 1f;
         [SerializeField] private float _waypointDwellTime = 3f;
+        [SerializeField] private float _shoutDistance = 5f;
         [Range(0,1)]
         [SerializeField] private float _patrolSpeedFraction = 0.2f;
         [SerializeField] private PatrolPath _patrolPath;
@@ -39,6 +41,7 @@ namespace CCC.Control
         private float _timeSinceArrivedAtWaypoint = Mathf.Infinity;
 
         private float _timeSinceAggrevated = Mathf.Infinity;
+        
 
         private void Awake()
         {
@@ -136,6 +139,18 @@ namespace CCC.Control
         {
             _timeSinceLastSawPlayer = 0f;
             _fighter.Attack(_player);
+
+            AggrevateNearbyEnemies();
+        }
+
+        private void AggrevateNearbyEnemies()
+        {
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, _shoutDistance, Vector3.up, 0f);
+
+            foreach (RaycastHit hit in hits)
+            {
+                hit.collider.GetComponent<AIController>()?.Aggrevate();
+            }
         }
 
         private Vector3 GetGuardPosition() => transform.position;

@@ -23,6 +23,7 @@ namespace CCC.Control
 
         [Header("Settings")]
         [SerializeField] private float _maxNavMeshProjectionDistance = 1f;
+        [SerializeField] private float _raycastRadius = 1f;
 
 
         [Header("Components")]
@@ -119,7 +120,7 @@ namespace CCC.Control
 
         private RaycastHit[] RaycastAllSorted()
         {
-            var hits = Physics.RaycastAll(GetMouseRay());
+            var hits = Physics.SphereCastAll(GetMouseRay(), _raycastRadius);
 
             float[] distances = new float[hits.Length];
             for (int i = 0; i < hits.Length; i++)
