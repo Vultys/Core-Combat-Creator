@@ -28,8 +28,6 @@ namespace CCC.Combat
         private int _attackTriggerHash = Animator.StringToHash("attack");
 
         private int _stopAttackTriggerHash = Animator.StringToHash("stopAttack");
-        
-        private bool _isInRange => Vector3.Distance(transform.position, _target.transform.position) < _currentWeaponConfig.Range;
 
         private WeaponConfig _currentWeaponConfig = null;
 
@@ -59,7 +57,7 @@ namespace CCC.Combat
                 return;
             }
 
-            if (!_isInRange)
+            if (!IsInRange(_target.transform))
             {
                 _mover.MoveTo(_target.transform.position, 1f);
             }
@@ -83,7 +81,8 @@ namespace CCC.Combat
                 return false;
             }
 
-            if (!GetComponent<Mover>().CanMoveTo(combatTarget.transform.position)) return false;
+            if (!GetComponent<Mover>().CanMoveTo(combatTarget.transform.position) && 
+                !IsInRange(combatTarget.transform)) return false;
 
             Health targetToTest = combatTarget.GetComponent<Health>();
             return targetToTest != null && !targetToTest.IsDead;
@@ -155,6 +154,11 @@ namespace CCC.Combat
         private Weapon AttachWeapon(WeaponConfig weapon) => weapon.Spawn(_rightHandTransform, _leftHandTransform, _animator);
 
         private Weapon SetupDefaultWeapon() => AttachWeapon(_defaultWeapon);
+
+        private bool IsInRange(Transform targetTransform)
+        {
+            return Vector3.Distance(transform.position, targetTransform.position) < _currentWeaponConfig.Range;
+        }
 
         /// <summary>
         /// Animation event
