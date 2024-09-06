@@ -12,6 +12,7 @@ namespace CCC.Control
         [Header("Settings")]
         [SerializeField] private float _chaseDistance = 5f;
         [SerializeField] private float _suspicionTime = 3f;
+        [SerializeField] private float _agroCullDownTime = 5f;
         [SerializeField] private float _waypointTolerance = 1f;
         [SerializeField] private float _waypointDwellTime = 3f;
         [Range(0,1)]
@@ -23,7 +24,7 @@ namespace CCC.Control
         [SerializeField] private Health _health;
         [SerializeField] private Mover _mover;
 
-        private bool _isInRange => Vector3.Distance(transform.position, _player.transform.position) < _chaseDistance;
+        private bool _isAggrevated => (Vector3.Distance(transform.position, _player.transform.position) < _chaseDistance) || _timeSinceAggrevated < _agroCullDownTime;
 
         private Vector3 _currentWaypoint => _patrolPath.GetWaypoint(_currentWaypointIndex); 
        
@@ -36,6 +37,8 @@ namespace CCC.Control
         private float _timeSinceLastSawPlayer = Mathf.Infinity;
 
         private float _timeSinceArrivedAtWaypoint = Mathf.Infinity;
+
+        private float _timeSinceAggrevated = Mathf.Infinity;
 
         private void Awake()
         {
@@ -55,7 +58,7 @@ namespace CCC.Control
                 return;
             }
 
-            if (_isInRange && _fighter.CanAttack(_player))
+            if (_isAggrevated && _fighter.CanAttack(_player))
             {
                 AttackBehaviour();
             }
@@ -81,10 +84,16 @@ namespace CCC.Control
             Gizmos.DrawWireSphere(transform.position, _chaseDistance);
         }
 
+        public void Aggrevate()
+        {
+            _timeSinceAggrevated = 0f;
+        }
+
         private void UpdateTimers()
         {
             _timeSinceLastSawPlayer += Time.deltaTime;
             _timeSinceArrivedAtWaypoint += Time.deltaTime;
+            _timeSinceAggrevated += Time.deltaTime;
         }
 
         private void PatrolBehaviour()
